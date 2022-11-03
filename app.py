@@ -1,4 +1,4 @@
-from SignalStudio import app
+from Equalizer import app
 
 # ------------------------------------------------------
 

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <title>Equlaizer</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/css/index.css" />
+    <!-- css and fonts and icons -->
+    <!-- <link rel="stylesheet" href="../static/css/index.css" /> -->
+    <!-- loading the plotly library from here -->
+    <script src="https://cdn.plot.ly/plotly-2.14.0.min.js"></script>
+
+</head>
+
+<body>
+    <dev></dev>
+    {% for i in slidernum %}
+    <dev>
+        <input type="range" id="snrSlider"  class="slider" id = slider{{i}} />
+    </dev>
+    <!-- <p class="value">Value: <span id="snrOutput"></span></p> -->
+    {% endfor %}
+</body>
+
+</html>
