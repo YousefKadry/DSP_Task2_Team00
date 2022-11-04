@@ -1,26 +1,50 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-
+<html lang="en">
 <head>
-    <title>Equlaizer</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../static/css/index.css" />
-    <!-- css and fonts and icons -->
-    <!-- <link rel="stylesheet" href="../static/css/index.css" /> -->
-    <!-- loading the plotly library from here -->
-    <script src="https://cdn.plot.ly/plotly-2.14.0.min.js"></script>
-
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equalizer</title>
+    <link rel="stylesheet" href="../static/css/index.css">
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
 </head>
-
 <body>
-    <dev></dev>
-    {% for i in slidernum %}
-    <dev>
-        <input type="range" id="snrSlider"  class="slider" id = slider{{i}} />
-    </dev>
-    <!-- <p class="value">Value: <span id="snrOutput"></span></p> -->
-    {% endfor %}
-</body>
+    <div class="container">
+        <div class="control ">
 
+        </div>
+        <div class="sig">
+            <div class="fig">
+
+            </div>
+            <div class="sliders">
+                <div class="select-mode">
+                    <div class="mode freq active">
+                        Frequency
+                    </div>
+                    <div class="mode vowels">
+                        Vowels
+                    </div>
+                    <div class="mode musicalInstruments">
+                        Musical Instruments
+                    </div>
+                    <div class="mode medicalSignal">
+                        Medical Signal
+                    </div>
+                    <div class="mode option">
+                        Option
+                    </div>
+                </div>
+                <div class="sliders-panel row">
+                    <div class="slider col-2">
+                        <input type="range" step="1" min="0" max="100" value="50" id="freq-slider-1" class="slider freq-slider-1">
+                        <div class="slider-value freq-slider-1">50</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="../static/js/main.js"></script>
+<script src="../static/js/bootstrap.min.js"></script>
 </html>
