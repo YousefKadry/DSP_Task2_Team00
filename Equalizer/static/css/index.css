@@ -2,6 +2,7 @@
     --primary-color: #361134;
     --sec-color: #B0228C;
     --darkest-color: #1f081e;
+    --hover-color: #520d50;
     --active-text: white;
     --inactive-text: #aeaeae;
     --border-radius: 15px
@@ -28,10 +29,24 @@ body{
 .control{
     display: inline-flex;
     height: 95%;
-    padding: 5%;
+    padding: 2rem;
     background-color: var(--primary-color);
     border-radius: var(--border-radius);
     width: 25%;
+}
+
+.control input#play-btn{
+    width: 100%;
+    height: 10vh;
+    color: var(--active-text);
+    background-color: var(--darkest-color);
+    border-radius: var(--border-radius);
+    transition: 0.3s;
+    border: none;
+}
+
+.control input#play-btn:hover{
+    background-color: var(--hover-color);
 }
 
 .sig{
@@ -46,16 +61,35 @@ body{
 
 .sig .fig{
     width: 100%;
-    height: 35%;
+    height: 60%;
     background-color: white;
     border-radius: var(--border-radius);
-    margin-bottom: 2%;
+    margin-bottom: 0.5rem;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 0.3rem;
+    display: flex;
+}
+
+.figure-container {
+    padding: 0.3rem 0.15rem;
+}
+
+.sig .fig .figure-container .figure{
+    background-color: rgb(218, 217, 217);
+    border-radius: var(--border-radius);
+    width: 100%;
+    height: 100%;
+}
+
+.myPlot{
+    width: 100%;
 }
 
 .select-mode{
     color: var(--inactive-text);
     display: flex;
-    margin: 1rem;
+    margin-bottom: 1.5rem;
     height: 60px;
 }
 
@@ -84,16 +118,22 @@ body{
 }
 
 .sliders-panel{
-    margin: 1.5rem;
-    height: 33vh;
+    margin-bottom: 1.5rem !important;
+    height: 15vh;
     justify-content: center;
+    justify-content: space-evenly;
+    width: 100%;
+    margin-right: auto !important;
+    margin-left: auto !important;
+    transform: translateY(-10%);
 }
 
 .slider{
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: column-reverse;
     align-items: center;
     justify-content: center;
+    justify-content: space-between;
     /* width: 16vw !important; */
 }
 
@@ -102,26 +142,28 @@ body{
     flex-direction: column;
     justify-content: space-around;
     height: 100%;
+    
 }
 
-.slider-text .label{
-    color: var(--sec-color);
-    padding: 5px 10px;
+.slider .label{
+    color: var(--active-text);
+    /* padding: 5px 10px; */
     font-weight: 500;
+    margin-top: 3.5rem;
     width: fit-content;
+    font-size: 0.9rem;
 }
 
 .slider .slider-value{
     background-color: var(--darkest-color);
     height: 2rem;
-    padding: 5px 15px;
+    padding: 5px;
     color: white;
     text-align: center;
     line-height: 1.3;
     border-radius: var(--border-radius);
-    margin-right: -2.5rem;
-    width: 100px !important;
-    transform: translateY(0%);
+    /* margin-right: -3rem; */
+    width: 4vw !important;
 
 }
 
@@ -136,13 +178,12 @@ body{
     outline: none;
     writing-mode: bt-lr; /* IE */
     -webkit-appearance: slider-vertical; /* WebKit */
-    width: 7rem;
-    height: 15px;
+    width: 8rem;
     color: var(--sec-color);
     opacity: 0.7;
     -webkit-transition: .2s;
     transition: opacity .2s;
-    fill: var(--sec-color);
+    margin-top: 4rem;
 }
 
 .sliders-panel input:hover{

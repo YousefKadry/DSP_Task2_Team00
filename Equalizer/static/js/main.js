@@ -16,7 +16,7 @@ document.addEventListener('click', (e) => {
         }
         e.target.classList.add("active")
 
-        currentSlidersPanel = document.getElementsByClassName("slider col-2")
+        currentSlidersPanel = document.getElementsByClassName("slider col-1")
         let numOfSliders = currentSlidersPanel.length
         let slidersList = [...currentSlidersPanel]
         for(let i = 0; i < numOfSliders; i++){
@@ -27,17 +27,18 @@ document.addEventListener('click', (e) => {
 
         for(let i = 0; i < currentMode.numOfSliders; i++){
             let slider = document.createElement("div")
-            slider.className = "slider col-2"
+            slider.className = "slider col-1"
             let input = document.createElement("input")
             input.type = "range"
             input.min = 0
             input.max = currentMode.maxFreq
+            input.value = 100
             input.step = currentMode.step
             input.id = `${currentMode.name}-slider-${i+1}`
             input.className = `slider ${currentMode.name}-slider-${i+1}`
 
             let value= document.createElement("div")
-            value.innerHTML=50
+            value.innerHTML= 100
             value.className = `slider-value ${currentMode.name}-slider-${i+1}`
 
             slider.appendChild(input)
@@ -73,6 +74,13 @@ if(e.target.classList.contains("slider")){
 let playBtn = document.getElementById('play-btn')
 let signal = {x:[], y:[], mode: "lines", type: "line", name:'newSignal'}
 let originalSignal = {x:[], y:[], mode: "lines", type: "line", name:'origSignal'}
+var layout = {
+    width: 435,
+    height: 360,
+    margin: {l:50, r:50, b:100, t:100, pad:4}
+}
+
+
 playBtn.onclick = ()=> {
     $.ajax({
         method: 'POST',
@@ -89,5 +97,6 @@ playBtn.onclick = ()=> {
             console.log(signal.y)
         }
     })
-    Plotly.newPlot('plot1', [originalSignal, signal])
+    Plotly.newPlot('plot1', [originalSignal], layout)
+    Plotly.newPlot('plot2', [signal], layout)
 }

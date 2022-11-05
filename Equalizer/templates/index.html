@@ -14,12 +14,21 @@
 </head>
 <body>
     <div class="container">
-        <div class="control ">
-            <input type="button" id="play-btn">play</input>
+        <div class="control">
+            <input type="button" id="play-btn" value="Play">
         </div>
         <div class="sig">
             <div class="fig">
-                <div id="plot1" class="myPlot"></div>
+                <div class="figure-container col-6">
+                    <div class="figure">
+                        <div id="plot1" class="myPlot"></div>
+                    </div> 
+                </div>
+                <div class="figure-container col-6">
+                    <div class="figure">
+                         <div id="plot2" class="myPlot"></div>
+                     </div>
+                 </div>
             </div>
             <div class="sliders">
                 <div class="select-mode">
@@ -40,9 +49,10 @@
                     </div>
                 </div>
                 <div class="sliders-panel row">
-                    <div class="slider col-2">
-                        <input type="range" step="1" min="0" max="100" value="50" id="freq-slider-1" class="slider freq-slider-1">
-                        <div class="slider-value freq-slider-1">50</div>
+                    <div class="slider col-1">
+                        <!-- <div class="label">500Hz</div> -->
+                        <input type="range" step="1" min="0" max="100" value="100" id="freq-slider-1" class="slider freq-slider-1">
+                        <div class="slider-value freq-slider-1">100</div>
                     </div>
                 </div>
             </div>
