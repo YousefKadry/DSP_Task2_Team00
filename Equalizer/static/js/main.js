@@ -97,6 +97,8 @@ playBtn.onclick = ()=> {
             console.log(signal.y)
         }
     })
-    Plotly.newPlot('plot1', [originalSignal], layout)
+    
+    animationGraph(signal.x, signal.y, layout)
+    // Plotly.newPlot('plot1', [originalSignal], layout)
     Plotly.newPlot('plot2', [signal], layout)
 }

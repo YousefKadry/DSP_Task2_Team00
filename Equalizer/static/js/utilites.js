@@ -3,8 +3,8 @@ let createSlidersObj = (mode) => {
     let slidersRange = [[1,499], [500, 999], [1000, 1499], [1500, 1999], [2000, 2499], [2500, 2999] ,[3000, 3499] 
     ,[3500, 3999] ,[4000, 4499] ,[4500, 5000]]
     if(mode.editRange)
-        for(let i=0; i <= mode.numOfSliders; i++){
-            slidersObj[`${mode.name}-slider-${i+1}`] = {freqRange: slidersRange[i], freqAmp: 0, modeName: mode.name}
+        for(let i=1; i <= mode.numOfSliders; i++){
+            slidersObj[`${mode.name}-slider-${i}`] = {freqRange: slidersRange[i-1], freqAmp: 0, modeName: mode.name}
         }
     else{
         piano_freq= [16.35160						
@@ -138,4 +138,43 @@ let updateData = (sliderInfoObj, sliderValue) => {
     });
 
     
+}
+
+
+let getData = (x, y) =>{
+    i+=820
+    if(i < x.length){
+        return [x[i], y[i]]
+    }
+    return false
+}
+
+
+let animationGraph = (x, y, layout) =>{
+    let rate = x.length/x[x.length-1]
+    console.log(rate)
+    Plotly.newPlot('plot1', [{x:[0], y:[0]}] , layout)
+    
+    let cnt = 0
+    var plotPoint = setInterval(async() =>{
+        if(i < x.length){
+            let data = getData(x, y)
+            let x1 = data[0]
+            let y1= data[1]
+        
+            await Plotly.extendTraces('plot1', {x:[[x1]],y:[[y1]]}, [0])
+            cnt+= 0.020
+            if(cnt>1){
+                let range = {range:[cnt-1, cnt]}
+                layout['xaxis']= range
+                Plotly.relayout('plot1', layout)
+            }
+        }
+        else{
+            i = 0
+            clearInterval(plotPoint)
+        }
+        
+        
+    },4)
 }
