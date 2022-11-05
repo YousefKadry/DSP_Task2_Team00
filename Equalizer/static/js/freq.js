@@ -1,3 +1,0 @@
-let freq_mode = () => {
-    
-}

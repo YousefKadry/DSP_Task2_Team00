@@ -7,15 +7,19 @@
     <title>Equalizer</title>
     <link rel="stylesheet" href="../static/css/index.css">
     <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+    <!--  Scripts  -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.6.1/d3.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
 <body>
     <div class="container">
         <div class="control ">
-
+            <input type="button" id="play-btn">play</input>
         </div>
         <div class="sig">
             <div class="fig">
-
+                <div id="plot1" class="myPlot"></div>
             </div>
             <div class="sliders">
                 <div class="select-mode">
@@ -45,6 +49,9 @@
         </div>
     </div>
 </body>
+<script src="../static/js/utilites.js"></script>
 <script src="../static/js/main.js"></script>
 <script src="../static/js/bootstrap.min.js"></script>
+<script src="../static/js/modes.js"></script>
+
 </html>
