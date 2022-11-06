@@ -133,67 +133,63 @@ let updateData = (sliderInfoObj, sliderValue) => {
         data: {freqRange:`${sliderInfoObj.freqRange[0]} ${sliderInfoObj.freqRange[1]}`,
             freqAmp:sliderInfoObj.freqAmp},
         success: function (res, status, xhr) {
-        console.log(res)
         }
     });
-
-    
 }
 
-let i = 0
-let j = 50
-let getData = (x, y) =>{
-    
-    if(j < x.length){
-        return [x.slice(i, j), y.slice(i, j)]
-        // return [x[i], y[i]]
-    }
-    return false
-}
+
 
 let plotdata
-
-let animationGraph = (newSignal, originalSignal, layout) =>{
-    // let rate = x.length/x[x.length-1]
-    // console.log(rate)
+let animationGraph = (signal, originalSignal, newSpectro, originalSpectro, layout) =>{
     // Plotly.newPlot(plotName, [{x:[0], y:[0]}] , layout)
-    Plotly.newPlot('plot1', [signal], layout)
-    Plotly.newPlot('plot2', [originalSignal], layout)
-    Plotly.newPlot('plot3', [signal], layout)
-    Plotly.newPlot('plot4', [originalSignal], layout)
+    let m = Math.max.apply(Math, originalSignal.y);
+    let range1 = {range:[-m, m]}
+    var spectrolayout = {
+        width: 540,
+        height: 350,
+        margin: {l:50, r:50, b:25, t:25, pad:1},
+        yaxis:{range:[0,Math.max.apply(Math, originalSpectro.y)]}
+    }
+    layout['yaxis']= range1
+    Plotly.newPlot('plot1', [originalSignal], layout)
+    Plotly.newPlot('plot2', [signal], layout)
+    Plotly.newPlot('plot3', [originalSpectro], spectrolayout)
+    Plotly.newPlot('plot4', [newSpectro], spectrolayout)
+
+    // let plot1 = document.getElementById('plot1')
+    // let plot2 = document.getElementById('plot2')
+    let plot3 = document.getElementById('plot3')
+    // let plot4 = document.getElementById('plot4')
 
     
-    let cnt =  0 - .05
+    plot1.on("plotly_relayout", function(ed) {
+    Plotly.relayout('plot2', layout)
+    
+
+    });
+
+    plot3.on("plotly_relayout", function(ed) {
+        Plotly.relayout('plot4', layout)
+    
+        });
+    
+    
+    let cnt =  0
     plotdata = setInterval(async() =>{
-        if(cnt <=signal.x[signal.x.length-1]){
-        //     let data = getData(signal.x, signal.y)
-        //     let x1 = data[0]
-        //     let y1= data[1]
-        //     i+=50
-        //     j+=50
-            
-        
-        //     await Plotly.extendTraces(plotName, {x:[x1],y:[y1]}, [0])
-            cnt+= .04
+        if(cnt+.25 <=signal.x[signal.x.length-1]){
+            cnt+= .06
             if(cnt>0){
-                let range = {range:[cnt-1, cnt]}
+                let range = {range:[cnt-.25, cnt+.25]}
                 layout['xaxis']= range
-                Plotly.relayout('plot1', layout)
-                Plotly.relayout('plot2', layout)
-                Plotly.relayout('plot3', layout)
-                Plotly.relayout('plot4', layout)
+                // setLayout(layout)
+                setLayout(layout)
             }
         }
         else{
-            i = 0
-            j = 0
             cnt = 0
-            console.log(i)
             clearInterval(plotdata)
-        }
-        
-        
-    },1)
+        } 
+    },60)
 
     
 }
@@ -202,3 +198,13 @@ let stopPlot = (interval = plotdata)=>{
     clearInterval(interval)
     }
 }
+
+let setLayout = (layout)=>{
+    
+    Plotly.relayout('plot1', layout)
+    Plotly.relayout('plot2', layout)
+    // Plotly.relayout('plot3', layout)
+    // Plotly.relayout('plot4', layout)
+
+}
+

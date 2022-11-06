@@ -51,7 +51,7 @@ document.addEventListener('click', (e) => {
                 currentSlider.addEventListener('mouseup', () =>{
 
                     updateData(sliderObj, currentSlider.value) 
-                    // console.log(sliderObj)
+                    
                 })
         })
     }
@@ -75,12 +75,15 @@ figMode.addEventListener("click", (e) => {
     if(e.target.classList[1] != "fig-mode-active"){
         e.target.classList.add("fig-mode-active")
         e.target.innerHTML = "Hide Spectrogram"
-        setTimeout(() => {  showSpectro(); }, 10);
         layout.height = 165
+        setLayout(layout)
+        setTimeout(() => {  showSpectro(); }, 10);
+
     } else {
         e.target.classList.remove("fig-mode-active")
         e.target.innerHTML = "Show Spectrogram"
         layout.height = 350
+        setLayout(layout)
         hideSpectro()
     }
 })
@@ -101,6 +104,8 @@ if(e.target.classList.contains("slider")){
 let playBtn = document.getElementById('play-btn')
 let signal = {x:[], y:[], mode: "lines", type: "line", name:'newSignal'}
 let originalSignal = {x:[], y:[], mode: "lines", type: "line", name:'origSignal'}
+let originalSpectro = {x:[], y:[],z:[], type:'heatmap', colorscale:'Jet'}
+let newSpectro = {x:[], y:[],z:[], type:'heatmap', colorscale:'Jet'}
 var layout = {
     width: 540,
     height: 350,
@@ -121,12 +126,19 @@ playBtn.onclick = ()=> {
             signal.y = res[1]
             originalSignal.x = res[0]
             originalSignal.y = res[2]
-            console.log(signal.x)
-            console.log(signal.y)
+            newSpectro.x = res[4]
+            newSpectro.y = res[3]
+            newSpectro.z = res[5]
+            originalSpectro.x = res[7]
+            originalSpectro.y = res[6]
+            originalSpectro.z = res[8]
+
         }
+
     })
+    
     stopPlot()
-    animationGraph(signal, originalSignal, layout)
+    animationGraph(signal, originalSignal, newSpectro, originalSpectro, layout)
     // animationGraph(originalSignal, layout, 'plot2')
     // Plotly.newPlot('plot1', [originalSignal], layout)
     // Plotly.newPlot('plot2', [signal], layout)

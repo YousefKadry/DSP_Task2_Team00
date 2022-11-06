@@ -4,6 +4,7 @@ from Equalizer import app
 from flask import request, json, jsonify
 from scipy.fft import rfft, rfftfreq, irfft
 from scipy.io import wavfile
+from scipy import signal
 import numpy as np
 import json
 import pandas as pd
@@ -11,7 +12,8 @@ import pandas as pd
 # signal = list(df['amplitude'])
 # time = list(df['time'])
 # sr1 = len(time)/time[-1]
-sr, song = wavfile.read("Equalizer/static/assets/test.wav")
+sr, song = wavfile.read("Equalizer/static/assets/pianosong.wav")
+
 yf = rfft(song)
 # xf = rfftfreq(len(yf), 1 / sr1)
 xf = rfftfreq(len(yf), 1 / sr)
@@ -49,11 +51,21 @@ def post_data():
     
     # data = [xf,list(yf), 'gg']
     wavfile.write('edited.wav', sr, y1)
-    sampledx = x[::25]
-    sampledy = y1.tolist()[::25]
-    sampledSong = song.tolist()[::25]
+    normalizedY = y1 / (2.**15)
+    N = 512 
+    w = signal.blackman(N)
+    f, t, freqAmp = signal.spectrogram(normalizedY, sr, window=w, nfft=N)
+    normalizedSong = song / (2.**15)
+    orignalF, orignalT, orignalFreqAmp = signal.spectrogram(normalizedSong, sr, window=w, nfft=N)
+    orignalFreqAmp = 10*np.log10(orignalFreqAmp)
+    freqAmp = 10*np.log10(freqAmp)
+    sampledx = x[::50]
+    sampledy = y1.tolist()[::50]
+    sampledSong = song.tolist()[::50]
     
-    return [sampledx,  sampledy, sampledSong]
+    
+    return [sampledx,  sampledy, sampledSong, f.tolist(), t.tolist(),
+            freqAmp.tolist(), orignalF.tolist(), orignalT.tolist(), orignalFreqAmp.tolist()]
     
     
     
