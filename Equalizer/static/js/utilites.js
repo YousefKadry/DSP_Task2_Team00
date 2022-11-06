@@ -140,41 +140,61 @@ let updateData = (sliderInfoObj, sliderValue) => {
     
 }
 
-
+let i = 0
+let j = 50
 let getData = (x, y) =>{
-    i+=820
-    if(i < x.length){
-        return [x[i], y[i]]
+    
+    if(j < x.length){
+        return [x.slice(i, j), y.slice(i, j)]
+        // return [x[i], y[i]]
     }
     return false
 }
 
+let plotdata
 
-let animationGraph = (x, y, layout) =>{
-    let rate = x.length/x[x.length-1]
-    console.log(rate)
-    Plotly.newPlot('plot1', [{x:[0], y:[0]}] , layout)
+let animationGraph = (newSignal, originalSignal, layout) =>{
+    // let rate = x.length/x[x.length-1]
+    // console.log(rate)
+    // Plotly.newPlot(plotName, [{x:[0], y:[0]}] , layout)
+    Plotly.newPlot('plot1', [signal], layout)
+    Plotly.newPlot('plot2', [originalSignal], layout)
+
     
-    let cnt = 0
-    var plotPoint = setInterval(async() =>{
-        if(i < x.length){
-            let data = getData(x, y)
-            let x1 = data[0]
-            let y1= data[1]
+    let cnt =  0 - .05
+    plotdata = setInterval(async() =>{
+        if(cnt <=signal.x[signal.x.length-1]){
+        //     let data = getData(signal.x, signal.y)
+        //     let x1 = data[0]
+        //     let y1= data[1]
+        //     i+=50
+        //     j+=50
+            
         
-            await Plotly.extendTraces('plot1', {x:[[x1]],y:[[y1]]}, [0])
-            cnt+= 0.020
-            if(cnt>1){
+        //     await Plotly.extendTraces(plotName, {x:[x1],y:[y1]}, [0])
+            cnt+= .04
+            if(cnt>0){
                 let range = {range:[cnt-1, cnt]}
                 layout['xaxis']= range
                 Plotly.relayout('plot1', layout)
+                Plotly.relayout('plot2', layout)
             }
         }
         else{
             i = 0
-            clearInterval(plotPoint)
+            j = 0
+            cnt = 0
+            console.log(i)
+            clearInterval(plotdata)
         }
         
         
-    },4)
+    },1)
+
+    
+}
+let stopPlot = (interval = plotdata)=>{
+    if(interval){
+    clearInterval(interval)
+    }
 }

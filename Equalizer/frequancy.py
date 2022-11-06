@@ -49,8 +49,11 @@ def post_data():
     
     # data = [xf,list(yf), 'gg']
     wavfile.write('edited.wav', sr, y1)
+    sampledx = x[::25]
+    sampledy = y1.tolist()[::25]
+    sampledSong = song.tolist()[::25]
     
-    return [x,  y1.tolist(), song.tolist()]
+    return [sampledx,  sampledy, sampledSong]
     
     
     

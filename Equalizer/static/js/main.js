@@ -77,7 +77,8 @@ let originalSignal = {x:[], y:[], mode: "lines", type: "line", name:'origSignal'
 var layout = {
     width: 435,
     height: 360,
-    margin: {l:50, r:50, b:100, t:100, pad:4}
+    margin: {l:50, r:50, b:100, t:100, pad:4},
+    xaxis:{range:[0-.025,0]}
 }
 
 
@@ -97,8 +98,9 @@ playBtn.onclick = ()=> {
             console.log(signal.y)
         }
     })
-    
-    animationGraph(signal.x, signal.y, layout)
+    stopPlot()
+    animationGraph(signal, originalSignal, layout)
+    // animationGraph(originalSignal, layout, 'plot2')
     // Plotly.newPlot('plot1', [originalSignal], layout)
-    Plotly.newPlot('plot2', [signal], layout)
+    // Plotly.newPlot('plot2', [signal], layout)
 }
