@@ -159,6 +159,8 @@ let animationGraph = (newSignal, originalSignal, layout) =>{
     // Plotly.newPlot(plotName, [{x:[0], y:[0]}] , layout)
     Plotly.newPlot('plot1', [signal], layout)
     Plotly.newPlot('plot2', [originalSignal], layout)
+    Plotly.newPlot('plot3', [signal], layout)
+    Plotly.newPlot('plot4', [originalSignal], layout)
 
     
     let cnt =  0 - .05
@@ -178,6 +180,8 @@ let animationGraph = (newSignal, originalSignal, layout) =>{
                 layout['xaxis']= range
                 Plotly.relayout('plot1', layout)
                 Plotly.relayout('plot2', layout)
+                Plotly.relayout('plot3', layout)
+                Plotly.relayout('plot4', layout)
             }
         }
         else{

@@ -57,6 +57,33 @@ document.addEventListener('click', (e) => {
     }
 });
 
+/*################################ Show Spectrogram ################################*/
+let figMode = document.querySelector(".fig-mode")
+let spectroGram = document.getElementsByClassName("spctrogram")
+let showSpectro = function() {
+    for(i = 0; i < spectroGram.length; i++){
+        spectroGram[i].style.display = "block"
+    }
+}
+let hideSpectro = function() {
+    for(i = 0; i < spectroGram.length; i++){
+        spectroGram[i].style.display = "none"
+    }
+}
+
+figMode.addEventListener("click", (e) => {
+    if(e.target.classList[1] != "fig-mode-active"){
+        e.target.classList.add("fig-mode-active")
+        e.target.innerHTML = "Hide Spectrogram"
+        setTimeout(() => {  showSpectro(); }, 10);
+        layout.height = 165
+    } else {
+        e.target.classList.remove("fig-mode-active")
+        e.target.innerHTML = "Show Spectrogram"
+        layout.height = 350
+        hideSpectro()
+    }
+})
 
 var slidersValue = document.getElementsByClassName("slider-value")  
 document.addEventListener('input', (e) => {
@@ -75,9 +102,9 @@ let playBtn = document.getElementById('play-btn')
 let signal = {x:[], y:[], mode: "lines", type: "line", name:'newSignal'}
 let originalSignal = {x:[], y:[], mode: "lines", type: "line", name:'origSignal'}
 var layout = {
-    width: 435,
-    height: 360,
-    margin: {l:50, r:50, b:100, t:100, pad:4},
+    width: 540,
+    height: 350,
+    margin: {l:50, r:50, b:25, t:25, pad:1},
     xaxis:{range:[0-.025,0]}
 }
 
