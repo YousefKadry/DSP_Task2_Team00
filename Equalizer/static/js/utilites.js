@@ -2,7 +2,7 @@ let createSlidersObj = (mode, sliderFreqValues, labels) => {
     let slidersObj = {}
         for(let i=1; i <= mode.numOfSliders; i++){
             slidersObj[`${mode.name}-slider-${i}`] ={freqToChange: sliderFreqValues[i-1]
-                                                    ,freqAmp: 0, modeName: mode.name, label:labels[i-1]}
+                                                    ,freqAmp: 100, modeName: mode.name, label:labels[i-1]}
         }
         piano_freq= [16.35160						
             ,17.32391						
@@ -144,9 +144,50 @@ let optionSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'lab
 
 modes.freq['slidersInfo'] = createSlidersObj(modes.freq, freqSlidersRange, freqSlidersLabel)
 modes.vowels['slidersInfo'] = createSlidersObj(modes.vowels, vowelsSlidersValues, vowelsSlidersLabel)
-modes.music['slidersInfo'] = createSlidersObj(modes.music, musicSlidersValues, musicSlidersLabel)
-modes.medical['slidersInfo'] = createSlidersObj(modes.medical, medicalSlidersValues, medicalSlidersLabel)
+modes.musicalInstruments['slidersInfo'] = createSlidersObj(modes.musicalInstruments, musicSlidersValues, musicSlidersLabel)
+modes.medicalSignal['slidersInfo'] = createSlidersObj(modes.medicalSignal, medicalSlidersValues, medicalSlidersLabel)
 modes.option['slidersInfo'] = createSlidersObj(modes.option, optionSlidersValues, optionSlidersLabel)
+}
+
+
+let createSlidersElemnts = (slidersInfo)=>{
+    currentSlidersPanel = document.getElementsByClassName("slider col-1")
+        let numOfSliders = currentSlidersPanel.length
+        let slidersList = [...currentSlidersPanel]
+        for(let i = 0; i < numOfSliders; i++){
+            slidersList[i].remove()
+        }
+
+    Object.entries(slidersInfo).forEach(([sliderId, sliderObj]) => {
+        let slider = document.createElement("div")
+        slider.className = "slider col-1"
+        let input = document.createElement("input")
+        input.id = sliderId
+        input.type = "range"
+        input.min = 0
+        input.max = currentMode.maxFreq
+        input.value = sliderObj.freqAmp
+        input.step = currentMode.step
+        input.className = `slider ${sliderId}`
+
+        let value= document.createElement("div")
+        
+        value.innerHTML= input.value
+        value.className = `slider-value ${sliderId}`
+
+        slider.appendChild(input)
+        slider.appendChild(value)
+        slidersPanel.appendChild(slider)
+    
+    
+        let currentSlider = document.getElementById(sliderId)
+        currentSlider.addEventListener('mouseup', () =>{
+            sliderObj.freqAmp = currentSlider.value
+            updateData(sliderObj) 
+        })
+            
+    })
+
 }
 
 
@@ -161,11 +202,7 @@ modes.option['slidersInfo'] = createSlidersObj(modes.option, optionSlidersValues
 
 
 
-
-
-
-let updateData = (sliderInfoObj, sliderValue) => {
-    sliderInfoObj.freqAmp = sliderValue
+let updateData = (sliderInfoObj) => {
     let changedFreq = sliderInfoObj.freqToChange.join(' ').toString()
     $.ajax({
         method: 'POST',
@@ -182,28 +219,25 @@ let updateData = (sliderInfoObj, sliderValue) => {
 
 
 let plotdata
-let animationGraph = (signal, originalSignal, newSpectro, originalSpectro, layout) =>{
-    // Plotly.newPlot(plotName, [{x:[0], y:[0]}] , layout)
-    let m = Math.max.apply(Math, originalSignal.y);
-    let range1 = {range:[-m, m]}
+let plotAll = (signal, originalSignal, newSpectro, originalSpectro, layout) =>{
+    let maxAmp = Math.max.apply(Math, originalSignal.y);
+    let yscale = {range:[-maxAmp, maxAmp]}
+    layout['yaxis']= yscale
     var spectrolayout = {
         width: 540,
         height: 165,
         margin: {l:50, r:50, b:25, t:25, pad:1},
         yaxis:{range:[0,Math.max.apply(Math, originalSpectro.y)]}
     }
-
-    layout['yaxis']= range1
-    let layout1 = {...layout}
-    let layout2 = {...layout}
-    Plotly.newPlot('plot1', [originalSignal], layout1)
-    Plotly.newPlot('plot2', [signal], layout2)
+    
+    Plotly.newPlot('plot1', [originalSignal], layout)
+    Plotly.newPlot('plot2', [signal], layout)
     Plotly.newPlot('plot3', [originalSpectro], spectrolayout)
     Plotly.newPlot('plot4', [newSpectro], spectrolayout)
 
-//     let plot1 = document.getElementById('plot1')
+    let plot1 = document.getElementById('plot1')
 //     let plot2 = document.getElementById('plot2')
-//     let plot3 = document.getElementById('plot3')
+    let plot3 = document.getElementById('plot3')
 //     // let plot4 = document.getElementById('plot4')
 
     
@@ -214,30 +248,25 @@ let animationGraph = (signal, originalSignal, newSpectro, originalSpectro, layou
         console.log('gg')
     });
 
-    // plot2.on("plotly_relayout", function(ed) {
-    //     // Plotly.newPlot('plot1', [originalSignal], layout)
-    //     Plotly.relayout('plot1', ed)
-    // });   
-
     plot3.on("plotly_relayout", function(ed) {
         Plotly.relayout('plot4', ed)
     
         });
     
     
-    let cnt =  0
+    let step =  0
     plotdata = setInterval(async() =>{
-        if(cnt+.25 <=signal.x[signal.x.length-1]){
-            cnt+= .065
-            if(cnt>0){
-                let range = {range:[cnt-.25, cnt+.25]}
+        if(step+.25 <=signal.x[signal.x.length-1]){
+            step+= .065
+            if(step>0){
+                let range = {range:[step-.25, step+.25]}
                 layout['xaxis']= range
                 // setLayout(layout)
                 setLayout(layout)
             }
         }
         else{
-            cnt = 0
+            step = 0
             clearInterval(plotdata)
         } 
     },65)

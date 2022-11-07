@@ -1,62 +1,31 @@
 const selectedModes = document.getElementsByClassName("mode")
 const modes = {
     freq: {numOfSliders:10, name:"frequancy", maxFreq:200, step:1, editRange:true},
-    vowels: {numOfSliders:9, name:"vowels", maxFreq:100, step:1, editRange:true},
-    music: {numOfSliders:8, name:"musical-instruments", maxFreq:100, step:1, editRange:true},
-    medical: {numOfSliders:7, name:"medical-signal", maxFreq:100, step:1, editRange:true},
-    option: {numOfSliders:6, name:"option", maxFreq:100, step:1, editRange:true}
+    vowels: {numOfSliders:9, name:"vowels", maxFreq:200, step:1, editRange:true},
+    musicalInstruments: {numOfSliders:8, name:"musical-instruments", maxFreq:200, step:1, editRange:true},
+    medicalSignal: {numOfSliders:7, name:"medical-signal", maxFreq:200, step:1, editRange:true},
+    option: {numOfSliders:6, name:"option", maxFreq:200, step:1, editRange:true}
 }
 
 createModesSliders(modes)
 
 /*################################ adding SLiders ################################*/
 let slidersPanel = document.querySelector(".sliders-panel")
-let currentMode, slidersObj
+let currentMode = modes.freq
+, slidersObj = currentMode.slidersInfo
+createSlidersElemnts(slidersObj)
+
 document.addEventListener('click', (e) => {
     if(e.target.classList.contains("mode")){
         for(i = 0; i<selectedModes.length; i++){
             selectedModes[i].classList.remove("active")
         }
         e.target.classList.add("active")
-
-        currentSlidersPanel = document.getElementsByClassName("slider col-1")
-        let numOfSliders = currentSlidersPanel.length
-        let slidersList = [...currentSlidersPanel]
-        for(let i = 0; i < numOfSliders; i++){
-            slidersList[i].remove()
-        }
         currentMode = modes[e.target.classList[1]]
         slidersObj = currentMode.slidersInfo
 
-        for(let i = 0; i < currentMode.numOfSliders; i++){
-            let slider = document.createElement("div")
-            slider.className = "slider col-1"
-            let input = document.createElement("input")
-            input.type = "range"
-            input.min = 0
-            input.max = currentMode.maxFreq
-            input.value = 100
-            input.step = currentMode.step
-            input.id = `${currentMode.name}-slider-${i+1}`
-            input.className = `slider ${currentMode.name}-slider-${i+1}`
+        createSlidersElemnts(slidersObj)
 
-            let value= document.createElement("div")
-            value.innerHTML= 100
-            value.className = `slider-value ${currentMode.name}-slider-${i+1}`
-
-            slider.appendChild(input)
-            slider.appendChild(value)
-            slidersPanel.appendChild(slider)
-        }
-        
-        Object.entries(slidersObj).forEach(([sliderId, sliderObj]) => {
-                let currentSlider = document.getElementById(sliderId)
-                currentSlider.addEventListener('mouseup', () =>{
-
-                    updateData(sliderObj, currentSlider.value) 
-                    
-                })
-        })
     }
 });
 
@@ -141,7 +110,7 @@ playBtn.onclick = ()=> {
     })
     
     stopPlot()
-    animationGraph(signal, originalSignal, newSpectro, originalSpectro, layout)
+    plotAll(signal, originalSignal, newSpectro, originalSpectro, layout)
     
     // animationGraph(originalSignal, layout, 'plot2')
     // Plotly.newPlot('plot1', [originalSignal], layout)

@@ -12,8 +12,8 @@ import pandas as pd
 # signal = list(df['amplitude'])
 # time = list(df['time'])
 # sr1 = len(time)/time[-1]
-# sr, song = wavfile.read("Equalizer/static/assets/pianosong.wav")
-sr, song = wavfile.read("Equalizer/static/assets/upload_sample1.wav")
+sr, song = wavfile.read("Equalizer/static/assets/pianosong.wav")
+# sr, song = wavfile.read("Equalizer/static/assets/upload_sample1.wav")
 # sr, song = wavfile.read("Equalizer/static/assets/test.wav")
 
 yf = rfft(song)
