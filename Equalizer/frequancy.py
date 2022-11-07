@@ -12,7 +12,9 @@ import pandas as pd
 # signal = list(df['amplitude'])
 # time = list(df['time'])
 # sr1 = len(time)/time[-1]
-sr, song = wavfile.read("Equalizer/static/assets/pianosong.wav")
+# sr, song = wavfile.read("Equalizer/static/assets/pianosong.wav")
+sr, song = wavfile.read("Equalizer/static/assets/upload_sample1.wav")
+# sr, song = wavfile.read("Equalizer/static/assets/test.wav")
 
 yf = rfft(song)
 # xf = rfftfreq(len(yf), 1 / sr1)
@@ -34,7 +36,7 @@ points_per_freq = len(xf) / (sr / 2)
 def edit_freq():
     
     freq_amp = float(request.values['freqAmp'])
-    freq_range = (request.values['freqRange']).split()
+    freq_range = (request.values['freqToChange']).split()
     target_idx1 = int(points_per_freq * int(freq_range[0]))
     target_idx2 = int(points_per_freq * int(freq_range[1]))
     yf[target_idx1-1: target_idx2] = m[target_idx1-1: target_idx2]*freq_amp/100 
@@ -59,9 +61,9 @@ def post_data():
     orignalF, orignalT, orignalFreqAmp = signal.spectrogram(normalizedSong, sr, window=w, nfft=N)
     orignalFreqAmp = 10*np.log10(orignalFreqAmp)
     freqAmp = 10*np.log10(freqAmp)
-    sampledx = x[::50]
-    sampledy = y1.tolist()[::50]
-    sampledSong = song.tolist()[::50]
+    sampledx = x[::80]
+    sampledy = y1.tolist()[::80]
+    sampledSong = song.tolist()[::80]
     
     
     return [sampledx,  sampledy, sampledSong, f.tolist(), t.tolist(),

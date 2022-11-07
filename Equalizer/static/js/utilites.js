@@ -1,12 +1,9 @@
-let createSlidersObj = (mode) => {
+let createSlidersObj = (mode, sliderFreqValues, labels) => {
     let slidersObj = {}
-    let slidersRange = [[1,499], [500, 999], [1000, 1499], [1500, 1999], [2000, 2499], [2500, 2999] ,[3000, 3499] 
-    ,[3500, 3999] ,[4000, 4499] ,[4500, 5000]]
-    if(mode.editRange)
         for(let i=1; i <= mode.numOfSliders; i++){
-            slidersObj[`${mode.name}-slider-${i}`] = {freqRange: slidersRange[i-1], freqAmp: 0, modeName: mode.name}
+            slidersObj[`${mode.name}-slider-${i}`] ={freqToChange: sliderFreqValues[i-1]
+                                                    ,freqAmp: 0, modeName: mode.name, label:labels[i-1]}
         }
-    else{
         piano_freq= [16.35160						
             ,17.32391						
             ,18.35405						
@@ -115,22 +112,67 @@ let createSlidersObj = (mode) => {
             ,7040.000						
             ,7458.620						
             ,7902.133]
-        for(let i=1; i <= mode.numOfSliders; i++){
-            slidersObj[`${mode.name}-slider-${i}`] = {freqlist: piano_freq, freqAmp: 0, modeName: mode.name}
-        }
-    }    
     return slidersObj
 }
 
 
+let createModesSliders = (modes)=>{
+    let freqSlidersRange = [[1,500], [500, 1000], [1000, 1500], [1500, 2000]
+, [2000, 2500], [2500, 3000] ,[3000, 3500] ,[3500, 4000] ,[4000, 4500] ,[4500, 5000]]
+
+let vowelsSlidersValues = [[1,500], [500, 1000], [1000, 1500], [1500, 2000]
+, [2000, 2500], [2500, 3000] ,[3000, 3500] ,[3500, 4000] ,[4000, 4500]]
+
+let musicSlidersValues = [[1,500], [500, 1000], [1000, 1500], [1500, 2000]
+, [2000, 2500], [2500, 3000] ,[3000, 3500] ,[3500, 4000]]
+
+let medicalSlidersValues = [[1,500], [500, 1000], [1000, 1500], [1500, 2000]
+, [2000, 2500], [2500, 3000] ,[3000, 3500]]
+
+let optionSlidersValues = [[1,500], [500, 1000], [1000, 1500], [1500, 2000]
+, [2000, 2500], [2500, 3000]]
+
+let freqSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8', 'label9', 'label10']
+
+let vowelsSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8', 'label9', 'label10']
+
+let musicSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8', 'label9', 'label10']
+
+let medicalSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8', 'label9', 'label10']
+
+let optionSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8', 'label9', 'label10']
+
+modes.freq['slidersInfo'] = createSlidersObj(modes.freq, freqSlidersRange, freqSlidersLabel)
+modes.vowels['slidersInfo'] = createSlidersObj(modes.vowels, vowelsSlidersValues, vowelsSlidersLabel)
+modes.music['slidersInfo'] = createSlidersObj(modes.music, musicSlidersValues, musicSlidersLabel)
+modes.medical['slidersInfo'] = createSlidersObj(modes.medical, medicalSlidersValues, medicalSlidersLabel)
+modes.option['slidersInfo'] = createSlidersObj(modes.option, optionSlidersValues, optionSlidersLabel)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 let updateData = (sliderInfoObj, sliderValue) => {
     sliderInfoObj.freqAmp = sliderValue
+    let changedFreq = sliderInfoObj.freqToChange.join(' ').toString()
     $.ajax({
         method: 'POST',
         url: `http://127.0.0.1:5000/${sliderInfoObj.modeName}`,
         dataType: 'json',
         async: false,
-        data: {freqRange:`${sliderInfoObj.freqRange[0]} ${sliderInfoObj.freqRange[1]}`,
+        data: {freqToChange: changedFreq,
             freqAmp:sliderInfoObj.freqAmp},
         success: function (res, status, xhr) {
         }
@@ -146,30 +188,39 @@ let animationGraph = (signal, originalSignal, newSpectro, originalSpectro, layou
     let range1 = {range:[-m, m]}
     var spectrolayout = {
         width: 540,
-        height: 350,
+        height: 165,
         margin: {l:50, r:50, b:25, t:25, pad:1},
         yaxis:{range:[0,Math.max.apply(Math, originalSpectro.y)]}
     }
+
     layout['yaxis']= range1
-    Plotly.newPlot('plot1', [originalSignal], layout)
-    Plotly.newPlot('plot2', [signal], layout)
+    let layout1 = {...layout}
+    let layout2 = {...layout}
+    Plotly.newPlot('plot1', [originalSignal], layout1)
+    Plotly.newPlot('plot2', [signal], layout2)
     Plotly.newPlot('plot3', [originalSpectro], spectrolayout)
     Plotly.newPlot('plot4', [newSpectro], spectrolayout)
 
-    // let plot1 = document.getElementById('plot1')
-    // let plot2 = document.getElementById('plot2')
-    let plot3 = document.getElementById('plot3')
-    // let plot4 = document.getElementById('plot4')
+//     let plot1 = document.getElementById('plot1')
+//     let plot2 = document.getElementById('plot2')
+//     let plot3 = document.getElementById('plot3')
+//     // let plot4 = document.getElementById('plot4')
 
     
+
+
     plot1.on("plotly_relayout", function(ed) {
-    Plotly.relayout('plot2', layout)
-    
-
+        Plotly.relayout('plot2', ed)
+        console.log('gg')
     });
 
+    // plot2.on("plotly_relayout", function(ed) {
+    //     // Plotly.newPlot('plot1', [originalSignal], layout)
+    //     Plotly.relayout('plot1', ed)
+    // });   
+
     plot3.on("plotly_relayout", function(ed) {
-        Plotly.relayout('plot4', layout)
+        Plotly.relayout('plot4', ed)
     
         });
     
@@ -177,7 +228,7 @@ let animationGraph = (signal, originalSignal, newSpectro, originalSpectro, layou
     let cnt =  0
     plotdata = setInterval(async() =>{
         if(cnt+.25 <=signal.x[signal.x.length-1]){
-            cnt+= .06
+            cnt+= .065
             if(cnt>0){
                 let range = {range:[cnt-.25, cnt+.25]}
                 layout['xaxis']= range
@@ -189,7 +240,7 @@ let animationGraph = (signal, originalSignal, newSpectro, originalSpectro, layou
             cnt = 0
             clearInterval(plotdata)
         } 
-    },60)
+    },65)
 
     
 }

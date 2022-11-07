@@ -2,10 +2,13 @@ const selectedModes = document.getElementsByClassName("mode")
 const modes = {
     freq: {numOfSliders:10, name:"frequancy", maxFreq:200, step:1, editRange:true},
     vowels: {numOfSliders:9, name:"vowels", maxFreq:100, step:1, editRange:true},
-    musicalInstruments: {numOfSliders:8, name:"musical-instruments", maxFreq:100, step:1, editRange:true},
-    medicalSignal: {numOfSliders:7, name:"medical-signal", maxFreq:100, step:1, editRange:true},
+    music: {numOfSliders:8, name:"musical-instruments", maxFreq:100, step:1, editRange:true},
+    medical: {numOfSliders:7, name:"medical-signal", maxFreq:100, step:1, editRange:true},
     option: {numOfSliders:6, name:"option", maxFreq:100, step:1, editRange:true}
 }
+
+createModesSliders(modes)
+
 /*################################ adding SLiders ################################*/
 let slidersPanel = document.querySelector(".sliders-panel")
 let currentMode, slidersObj
@@ -23,7 +26,7 @@ document.addEventListener('click', (e) => {
             slidersList[i].remove()
         }
         currentMode = modes[e.target.classList[1]]
-        slidersObj = createSlidersObj(currentMode)
+        slidersObj = currentMode.slidersInfo
 
         for(let i = 0; i < currentMode.numOfSliders; i++){
             let slider = document.createElement("div")
@@ -139,6 +142,7 @@ playBtn.onclick = ()=> {
     
     stopPlot()
     animationGraph(signal, originalSignal, newSpectro, originalSpectro, layout)
+    
     // animationGraph(originalSignal, layout, 'plot2')
     // Plotly.newPlot('plot1', [originalSignal], layout)
     // Plotly.newPlot('plot2', [signal], layout)
