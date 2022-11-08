@@ -61,34 +61,84 @@ document.addEventListener('click', (e) => {
 });
 
 /*################################ Show Spectrogram ################################*/
-let figMode = document.querySelector(".fig-mode")
+let figModes = document.querySelectorAll(".fig-mode")
 let spectroGram = document.getElementsByClassName("spctrogram")
-let showSpectro = function() {
-    for(i = 0; i < spectroGram.length; i++){
-        spectroGram[i].style.display = "block"
+let lineGraph = document.getElementsByClassName("linegraph")
+let signalOnly = function() {
+    for(i = 0; i < lineGraph.length; i++){
+        lineGraph[i].style.display = "block"
     }
-}
-let hideSpectro = function() {
     for(i = 0; i < spectroGram.length; i++){
         spectroGram[i].style.display = "none"
     }
 }
-
-figMode.addEventListener("click", (e) => {
-    if(e.target.classList[1] != "fig-mode-active"){
-        e.target.classList.add("fig-mode-active")
-        e.target.innerHTML = "Hide Spectrogram"
-        layout.height = 165
-        setLayout(layout)
-        setTimeout(() => {  showSpectro(); }, 10);
-
-    } else {
-        e.target.classList.remove("fig-mode-active")
-        e.target.innerHTML = "Show Spectrogram"
-        layout.height = 350
-        setLayout(layout)
-        hideSpectro()
+let spectroOnly = function() {
+    for(i = 0; i < lineGraph.length; i++){
+        lineGraph[i].style.display = "none"
     }
+    for(i = 0; i < spectroGram.length; i++){
+        spectroGram[i].style.display = "block"
+    }
+}
+let showBoth = function() {
+    for(i = 0; i < lineGraph.length; i++){
+        lineGraph[i].style.display = "block"
+    }
+    for(i = 0; i < spectroGram.length; i++){
+        spectroGram[i].style.display = "block"
+    }
+}
+
+
+let stopingBtns = document.getElementsByClassName("stoping-btns")
+let playButton = document.querySelector(".play")
+let pauseButton = document.querySelector(".pause")
+document.addEventListener("click", (e) => {
+    if(e.target.classList[0] == "fig-mode"){
+        for(i = 0; i < figModes.length; i++){
+            if(figModes[i].classList[2] == "fig-mode-active"){
+                figModes[i].classList.remove("fig-mode-active")
+            } 
+            e.target.classList.add("fig-mode-active")
+        }
+        if (e.target.classList[1] == "signal-only"){
+            layout.height = 350
+            signalOnly()
+            setLayout(layout)
+        } else if (e.target.classList[1] == "spectrogram-only"){
+            spectrolayout.height = 350
+            spectroOnly()
+            setSpectroLayout(spectrolayout)
+        } else {
+            layout.height = 165
+            spectrolayout.height = 165
+            setTimeout(() => {showBoth(); }, 10);
+            setLayout(layout)
+            setSpectroLayout(spectrolayout)
+        }
+    }
+    if(e.target.classList[1] == "play"){
+            for(i=0; i<stopingBtns.length; i++){
+                stopingBtns[i].classList.remove("btn-off")
+                stopingBtns[i].classList.add("btn-on")
+            }
+            e.target.classList.add("hide-play-btn")
+    }
+    if(e.target.classList.contains("stop")){
+        for(i=0; i<stopingBtns.length; i++){
+            stopingBtns[i].classList.add("btn-off")
+            stopingBtns[i].classList.remove("btn-on")
+        }   
+        setTimeout(() => {playButton.classList.remove("hide-play-btn"); }, 50);
+        pauseButton.classList.remove("pausing")
+    }
+    if(e.target.classList.contains("pause")){
+        if(e.target.classList.contains("pausing") || e.target.classList.contains("btn-off")){
+            e.target.classList.remove("pausing")
+        } else {
+            e.target.classList.add("pausing")
+        }
+    } 
 })
 
 var slidersValue = document.getElementsByClassName("slider-value")  
@@ -102,6 +152,9 @@ if(e.target.classList.contains("slider")){
         }
     }
 }
+if(e.target.className == "speed-slider"){
+    document.querySelector(".play-speed .slider-value").innerHTML = `x${e.target.value} `
+}
 })
 
 let playBtn = document.getElementById('play-btn')
@@ -114,6 +167,12 @@ var layout = {
     height: 350,
     margin: {l:50, r:50, b:25, t:25, pad:1},
     xaxis:{range:[0-.025,0]}
+}
+var spectrolayout = {
+    width: 540,
+    height: 165,
+    margin: {l:50, r:50, b:25, t:25, pad:1},
+    yaxis:{range:[0,Math.max.apply(Math, originalSpectro.y)]}
 }
 
 
@@ -141,7 +200,7 @@ playBtn.onclick = ()=> {
     })
     
     stopPlot()
-    animationGraph(signal, originalSignal, newSpectro, originalSpectro, layout)
+    animationGraph(signal, originalSignal, newSpectro, originalSpectro, layout, spectrolayout)
     
     // animationGraph(originalSignal, layout, 'plot2')
     // Plotly.newPlot('plot1', [originalSignal], layout)

@@ -186,14 +186,8 @@ let animationGraph = (signal, originalSignal, newSpectro, originalSpectro, layou
     // Plotly.newPlot(plotName, [{x:[0], y:[0]}] , layout)
     let m = Math.max.apply(Math, originalSignal.y);
     let range1 = {range:[-m, m]}
-    var spectrolayout = {
-        width: 540,
-        height: 165,
-        margin: {l:50, r:50, b:25, t:25, pad:1},
-        yaxis:{range:[0,Math.max.apply(Math, originalSpectro.y)]}
-    }
-
-    layout['yaxis']= range1
+    
+        layout['yaxis']= range1
     let layout1 = {...layout}
     let layout2 = {...layout}
     Plotly.newPlot('plot1', [originalSignal], layout1)
@@ -251,11 +245,11 @@ let stopPlot = (interval = plotdata)=>{
 }
 
 let setLayout = (layout)=>{
-    
     Plotly.relayout('plot1', layout)
     Plotly.relayout('plot2', layout)
-    // Plotly.relayout('plot3', layout)
-    // Plotly.relayout('plot4', layout)
-
+}
+let setSpectroLayout = (spectrolayout)=>{
+    Plotly.relayout('plot3', spectrolayout)
+    Plotly.relayout('plot4', spectrolayout)
 }
 
