@@ -137,8 +137,10 @@ document.addEventListener("click", (e) => {
     if(e.target.classList.contains("pause")){
         if(e.target.classList.contains("pausing") || e.target.classList.contains("btn-off")){
             e.target.classList.remove("pausing")
+            e.target.classList.add("btn-on")
         } else {
             e.target.classList.add("pausing")
+            e.target.classList.remove("btn-on")
         }
     } 
 
@@ -185,9 +187,39 @@ var layout = {
 }
 var spectrolayout = {
     width: 540,
-    height: 165,
+    height: 350,
     margin: {l:50, r:50, b:25, t:25, pad:1},
     yaxis:{range:[0,Math.max.apply(Math, originalSpectro.y)]}
 }
 
 
+<<<<<<< HEAD
+=======
+playBtn.onclick = ()=> {
+    $.ajax({
+        method: 'POST',
+        url: 'http://127.0.0.1:5000/data',
+        dataType: 'json',
+        async: false,
+        data: {},
+        success: function (res, status, xhr) {
+            signal.x = res[0]
+            signal.y = res[1]
+            originalSignal.x = res[0]
+            originalSignal.y = res[2]
+            newSpectro.x = res[4]
+            newSpectro.y = res[3]
+            newSpectro.z = res[5]
+            originalSpectro.x = res[7]
+            originalSpectro.y = res[6]
+            originalSpectro.z = res[8]
+
+        }
+
+    })
+    
+    stopPlot()
+    plotAll(signal, originalSignal, newSpectro, originalSpectro, layout, spectrolayout)  
+}
+
+>>>>>>> 1f6dd41b4b18af58f7669646590f174b18b6adea
