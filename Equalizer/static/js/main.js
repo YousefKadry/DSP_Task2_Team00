@@ -30,7 +30,11 @@ document.addEventListener('click', (e) => {
 
         for(let i = 0; i < currentMode.numOfSliders; i++){
             let slider = document.createElement("div")
+<<<<<<< Updated upstream
             slider.className = "slider col-1"
+=======
+            slider.className = "slider col-1 "
+>>>>>>> Stashed changes
             let input = document.createElement("input")
             input.type = "range"
             input.min = 0
@@ -60,6 +64,7 @@ document.addEventListener('click', (e) => {
     }
 });
 
+<<<<<<< Updated upstream
 /*################################ Show Spectrogram ################################*/
 let figModes = document.querySelectorAll(".fig-mode")
 let spectroGram = document.getElementsByClassName("spctrogram")
@@ -141,6 +146,8 @@ document.addEventListener("click", (e) => {
     } 
 })
 
+=======
+>>>>>>> Stashed changes
 var slidersValue = document.getElementsByClassName("slider-value")  
 document.addEventListener('input', (e) => {
 if(e.target.classList.contains("slider")){
