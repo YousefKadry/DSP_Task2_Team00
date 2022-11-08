@@ -220,17 +220,10 @@ let updateData = (sliderInfoObj) => {
 
 
 let plotdata
-let plotAll = (signal, originalSignal, newSpectro, originalSpectro, layout) =>{
+let plotAll = (signal, originalSignal, newSpectro, originalSpectro, layout, spectrolayout) =>{
     let maxAmp = Math.max.apply(Math, originalSignal.y);
     let yscale = {range:[-maxAmp, maxAmp]}
-    layout['yaxis']= yscale
-    var spectrolayout = {
-        width: 540,
-        height: 165,
-        margin: {l:50, r:50, b:25, t:25, pad:1},
-        yaxis:{range:[0,Math.max.apply(Math, originalSpectro.y)]}
-    }
-    
+    layout['yaxis']= yscale   
     Plotly.newPlot('plot1', [originalSignal], layout)
     Plotly.newPlot('plot2', [signal], layout)
     Plotly.newPlot('plot3', [originalSpectro], spectrolayout)
@@ -320,11 +313,11 @@ let stopPlot = (interval = plotdata)=>{
 }
 
 let setLayout = (layout)=>{
-    
     Plotly.relayout('plot1', layout)
     Plotly.relayout('plot2', layout)
-    // Plotly.relayout('plot3', layout)
-    // Plotly.relayout('plot4', layout)
-
+}
+let setSpectroLayout = (spectrolayout)=>{
+    Plotly.relayout('plot3', spectrolayout)
+    Plotly.relayout('plot4', spectrolayout)
 }
 

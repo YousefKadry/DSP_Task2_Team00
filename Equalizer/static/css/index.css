@@ -4,7 +4,8 @@
     --darkest-color: #1f081e;
     --hover-color: #520d50;
     --active-text: white;
-    --inactive-text: #aeaeae;
+    --inactive-text: #a9a8a8;
+    --inactive-button: #7d7c7c;
     --border-radius: 15px
 }
 
@@ -26,15 +27,17 @@ body{
     display: flex;
     justify-content: space-around;
     align-items: center;
+    padding: 0 !important;
 }
 
 .control{
     display: inline-flex;
-    height: 95%;
+    flex-direction: column;
+    height: 98%;
     padding: 2rem;
     background-color: var(--primary-color);
     border-radius: var(--border-radius);
-    width: 25%;
+    width: 24.2%;
     position: relative;
 }
 
@@ -52,31 +55,170 @@ body{
     background-color: var(--hover-color);
 }
 
+.buttons{
+    position: absolute;
+    bottom: 5vh;
+    width: calc(100% - 4rem);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: var(--darkest-color);
+    border-radius: var(--border-radius);
+    height: 7vh;
+}
+
+.buttons .button{
+    color: var(--inactive-text);
+    transition: 0.3s;
+    font-size: 25px;
+}
+
+.buttons .button svg{
+    pointer-events: none;
+}
+
+.button.play{
+    background-color: var(--sec-color);
+    border-radius: 50%;
+    color: white ;
+    width: 4vw;
+    height: 4vw;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.button.play:hover{
+    background-color: var(--active-text);
+    color: var(--sec-color);
+}
+
+.playing{
+    color: var(--sec-color) !important;
+    background-color: var(--active-text) !important;
+}
+
+.hide-play-btn{
+    display: none !important;
+    transition: 0.3s !important;
+}
+
+.buttons .button:hover:first-child,
+.buttons .button:hover:last-child{
+    color: var(--hover-color);
+}
+
+.btn-off{
+    color: var(--inactive-button) !important;
+    cursor: default !important;
+}
+
+.btn-off:hover{
+    color: var(--inactive-text);
+}
+
+.btn-on{
+    color: var(--active-text) !important;
+    cursor: pointer !important;
+}
+
+.btn-on:hover{
+    color: var(--sec-color) !important;
+}
+
+.pausing{
+    color: var(--sec-color) !important;
+}
+
+.play-speed{
+    position: absolute;
+    color: var(--active-text);
+    bottom: 15vh;
+    width: calc(100% - 4rem);
+}
+
+.play-speed-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.play-speed .slider-value{
+    margin-bottom: 2vh;
+}
+
+.play-speed h6{
+    font-weight: 400;
+    height: fit-content;
+}
+
+.play-speed .speed-slider{
+    -webkit-appearance: none;
+    appearance: none !important;
+    outline: none !important;
+    border-radius: 0px;
+    background: var(--darkest-color);
+    outline: none;
+    writing-mode: bt-lr; /* IE */
+    -webkit-appearance: slider-vertical; /* WebKit */
+    width: 100%;
+    color: var(--sec-color);
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+.play-speed .speed-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 20px;
+    background: var(--sec-color);
+    cursor: pointer;
+  }
+
 .sig{
     display: inline-flex;
     flex-direction: column;
-    height: 95%;
+    height: 98%;
     padding: 2%;
     background-color: var(--primary-color);
     border-radius: var(--border-radius);
-    width: 72%;
+    width: 75%;
+}
+
+.fig-modes{
+    position: absolute;
+    bottom: 29vh;
+    display: flex;
+    border-radius: var(--border-radius);
+    width: 20vw;
+    right: 2vw;
 }
 
 .fig-mode{
     background-color: var(--darkest-color);
     color: var(--inactive-text);
-    border-radius: var(--border-radius);
-    width: calc(100% - 4rem);
-    height: 6vh;
-    line-height: 1;
-    padding: 1rem;
+    height: 5vh;
+    width: calc(100%/3);
+    line-height: .5;
+    padding: 1rem 0;
     text-align: center;
     cursor: pointer;
     transition: 0.3s;
-    position: absolute;
-    bottom: 3vh;
-    left: 50%;
-    transform: translateX(-50%);
+    font-size: 0.9vw;
+}
+
+.fig-mode:first-child{
+    border-bottom-left-radius: var(--border-radius);
+    border-top-left-radius: var(--border-radius);
+}
+
+.fig-mode:last-child{
+    border-bottom-right-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
 }
 
 .fig-mode-active{
@@ -193,7 +335,7 @@ body{
     font-size: 0.9rem;
 }
 
-.slider .slider-value{
+.slider-value{
     background-color: var(--darkest-color);
     height: 2rem;
     padding: 5px;
