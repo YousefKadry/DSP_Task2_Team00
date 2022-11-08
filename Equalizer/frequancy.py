@@ -12,9 +12,9 @@ import pandas as pd
 # signal = list(df['amplitude'])
 # time = list(df['time'])
 # sr1 = len(time)/time[-1]
-sr, song = wavfile.read("Equalizer/static/assets/pianosong.wav")
+# sr, song = wavfile.read("Equalizer/static/assets/pianosong.wav")
 # sr, song = wavfile.read("Equalizer/static/assets/upload_sample1.wav")
-# sr, song = wavfile.read("Equalizer/static/assets/test.wav")
+sr, song = wavfile.read("Equalizer/static/assets/test.wav")
 
 yf = rfft(song)
 # xf = rfftfreq(len(yf), 1 / sr1)
@@ -32,27 +32,19 @@ points_per_freq = len(xf) / (sr / 2)
 
 # wavfile.write('edited.wav', sr, data)
 
-@app.route('/frequancy', methods = ['POST'])
+@app.route('/frequency', methods = ['POST'])
 def edit_freq():
-    
+
     freq_amp = int(request.values['freqAmp'])/100
     freq_range = (request.values['freqToChange']).split()
     target_idx1 = int(points_per_freq * int(freq_range[0]))
     target_idx2 = int(points_per_freq * int(freq_range[1]))
-    if freq_amp > 1:
-        halfFactors = np.linspace(1, freq_amp, int(len(m[target_idx1-1: target_idx2])*0.5))
-        factors = np.concatenate((halfFactors, halfFactors[::-1]))
-    elif freq_amp < 1:
-        halfFactors = np.linspace(freq_amp, 1, int(len(m[target_idx1-1: target_idx2])*0.5))
-        factors = np.concatenate((halfFactors[::-1], halfFactors))
-    else: return
-    yf[target_idx1-1: target_idx2] = [i*j for i,j in zip(factors, m[target_idx1-1: target_idx2])]
-    # yf[target_idx1-1: target_idx2] = m[target_idx1-1: target_idx2]*factors 
+    
+    yf[target_idx1-1: target_idx2] = m[target_idx1-1: target_idx2]*freq_amp 
 
-    return [yf[target_idx1-1: target_idx2].astype(np.int16).tolist(),
-            (m[target_idx1-1: target_idx2]*factors).astype(np.int16).tolist(), factors.tolist()]
+    return []
 
-@app.route('/data', methods = ['POST'])
+@app.route('/frequency/data', methods = ['POST'])
 def post_data():
     # z = yf.T[0]
     y1 = irfft(yf).astype(np.int16)

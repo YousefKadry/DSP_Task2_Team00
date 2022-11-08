@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< Updated upstream
     <title>Equalizer</title>
     <link rel="stylesheet" href="../static/css/index.css">
     <link rel="stylesheet" href="../static/css/bootstrap.min.css">
@@ -17,7 +16,12 @@
 <body>
     <div class="container">
         <div class="control">
-            <input type="button" id="play-btn" value="Browse">
+            <input type="button" id="play-btn" value="Browse" class="browse">
+            <!-- <audio id="audio" src="./Equalizer/static/assets/test.wav"></audio> -->
+            <audio controls hidden>
+                <!-- <source src="horse.ogg" type="audio/ogg"> -->
+                <source src='' type="audio/wav">
+              </audio>
             <div class="buttons">
                 <div class="button pause btn-off stoping-btns">
                     <i class="fa-solid fa-pause"></i>
@@ -102,11 +106,4 @@
 <script src="../static/js/bootstrap.min.js"></script>
 <script src="../static/js/freqMode.js"></script>
 
-=======
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
->>>>>>> Stashed changes
 </html>

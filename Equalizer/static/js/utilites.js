@@ -134,13 +134,13 @@ let optionSlidersValues = [[1,500], [500, 1000], [1000, 1500], [1500, 2000]
 
 let freqSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8', 'label9', 'label10']
 
-let vowelsSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8', 'label9', 'label10']
+let vowelsSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8', 'label9']
 
-let musicSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8', 'label9', 'label10']
+let musicSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8']
 
-let medicalSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8', 'label9', 'label10']
+let medicalSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7']
 
-let optionSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8', 'label9', 'label10']
+let optionSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'label6']
 
 modes.freq['slidersInfo'] = createSlidersObj(modes.freq, freqSlidersRange, freqSlidersLabel)
 modes.vowels['slidersInfo'] = createSlidersObj(modes.vowels, vowelsSlidersValues, vowelsSlidersLabel)
@@ -191,17 +191,6 @@ let createSlidersElemnts = (slidersInfo)=>{
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
 let updateData = (sliderInfoObj) => {
     let changedFreq = sliderInfoObj.freqToChange.join(' ').toString()
     $.ajax({
@@ -220,6 +209,7 @@ let updateData = (sliderInfoObj) => {
 
 
 let plotdata
+let step =  0
 let plotAll = (signal, originalSignal, newSpectro, originalSpectro, layout, spectrolayout) =>{
     let maxAmp = Math.max.apply(Math, originalSignal.y);
     let yscale = {range:[-maxAmp, maxAmp]}
@@ -234,47 +224,9 @@ let plotAll = (signal, originalSignal, newSpectro, originalSpectro, layout, spec
     let plot3 = document.getElementById('plot3')
     let plot4 = document.getElementById('plot4')
 
-    plot1.on('plotly_hover', function (eventdata){
-        var pointNum = eventdata.points[0].pointNumber;
-        Plotly.Fx.hover('plot2',[
-            { curveNumber:0, pointNumber:pointNum }
-        ]);
-        })
-        .on('plotly_unhover',function(){
-        Plotly.Fx.hover('plot2',[]);
-        });
 
-    plot2.on('plotly_hover', function (eventdata){
-        var pointNum = eventdata.points[0].pointNumber;
-        Plotly.Fx.hover('plot1',[
-            { curveNumber:0, pointNumber:pointNum }
-        ]);
-        })
-        .on('plotly_unhover',function(){
-        Plotly.Fx.hover('plot1',[]);
-        });
-
-
-        plot3.on('plotly_hover', function (eventdata){
-            var pointNum = eventdata.points[0].pointNumber;
-            Plotly.Fx.hover('plot4',[
-                { curveNumber:0, pointNumber:pointNum }
-            ]);
-            })
-            .on('plotly_unhover',function(){
-            Plotly.Fx.hover('plot4',[]);
-            });
-    
-        plot4.on('plotly_hover', function (eventdata){
-            var pointNum = eventdata.points[0].pointNumber;
-            Plotly.Fx.hover('plot3',[
-                { curveNumber:0, pointNumber:pointNum }
-            ]);
-            })
-            .on('plotly_unhover',function(){
-            Plotly.Fx.hover('plot3',[]);
-            });
-
+    syncHover(plot1, plot2)
+    syncHover(plot3, plot4)
 
     plot1.on("plotly_relayout", function(ed) {
         Plotly.relayout('plot2', ed)
@@ -287,28 +239,31 @@ let plotAll = (signal, originalSignal, newSpectro, originalSpectro, layout, spec
         });
     
     
-    let step =  0
+    
     plotdata = setInterval(async() =>{
         if(step+.25 <=signal.x[signal.x.length-1]){
             step+= .1
             if(step>0){
                 let range = {range:[step-.25, step+.25]}
                 layout['xaxis']= range
-                // setLayout(layout)
                 setLayout(layout)
             }
         }
         else{
-            step = 0
-            clearInterval(plotdata)
+
+            stopPlaying()
         } 
     },100)
 
     
 }
-let stopPlot = (interval = plotdata)=>{
+let stopPlaying = (interval = plotdata)=>{
     if(interval){
     clearInterval(interval)
+    step = 0
+    let range = {range:[0-.025,0]}
+                layout['xaxis']= range
+                setLayout(layout)    
     }
 }
 
@@ -321,3 +276,23 @@ let setSpectroLayout = (spectrolayout)=>{
     Plotly.relayout('plot4', spectrolayout)
 }
 
+let syncHover = (plotdev1, plotdev2)=>{
+    plotdev1.on('plotly_hover', function (eventdata){
+        var pointNum = eventdata.points[0].pointNumber;
+        Plotly.Fx.hover(plotdev2,[
+            { curveNumber:0, pointNumber:pointNum }
+        ]);
+        })
+        .on('plotly_unhover',function(){
+        Plotly.Fx.hover(plotdev2,[]);
+        });
+    plotdev2.on('plotly_hover', function (eventdata){
+        var pointNum = eventdata.points[0].pointNumber;
+        Plotly.Fx.hover(plotdev1,[
+            { curveNumber:0, pointNumber:pointNum }
+        ]);
+        })
+        .on('plotly_unhover',function(){
+        Plotly.Fx.hover(plotdev1,[]);
+        });
+}

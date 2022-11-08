@@ -1,6 +1,6 @@
 const selectedModes = document.getElementsByClassName("mode")
 const modes = {
-    freq: {numOfSliders:10, name:"frequancy", maxFreq:200, step:1, editRange:true},
+    freq: {numOfSliders:10, name:"frequency", maxFreq:200, step:1, editRange:true},
     vowels: {numOfSliders:9, name:"vowels", maxFreq:200, step:1, editRange:true},
     musicalInstruments: {numOfSliders:8, name:"musical-instruments", maxFreq:200, step:1, editRange:true},
     medicalSignal: {numOfSliders:7, name:"medical-signal", maxFreq:200, step:1, editRange:true},
@@ -86,13 +86,43 @@ document.addEventListener("click", (e) => {
             setSpectroLayout(spectrolayout)
         }
     }
-    if(e.target.classList[1] == "play"){
-            for(i=0; i<stopingBtns.length; i++){
-                stopingBtns[i].classList.remove("btn-off")
-                stopingBtns[i].classList.add("btn-on")
-            }
-            e.target.classList.add("hide-play-btn")
+
+    if(e.target.classList.contains("browse")){
+
     }
+
+    if(e.target.classList[1] == "play"){
+        for(i=0; i<stopingBtns.length; i++){
+            stopingBtns[i].classList.remove("btn-off")
+            stopingBtns[i].classList.add("btn-on")
+        }
+        e.target.classList.add("hide-play-btn")
+        
+        $.ajax({
+            method: 'POST',
+            url: `http://127.0.0.1:5000/${currentMode.name}/data`,
+            dataType: 'json',
+            async: false,
+            data: {},
+            success: function (res, status, xhr) {
+                signal.x = res[0]
+                signal.y = res[1]
+                originalSignal.x = res[0]
+                originalSignal.y = res[2]
+                newSpectro.x = res[4]
+                newSpectro.y = res[3]
+                newSpectro.z = res[5]
+                originalSpectro.x = res[7]
+                originalSpectro.y = res[6]
+                originalSpectro.z = res[8]
+    
+            }
+    
+        })
+        
+        plotAll(signal, originalSignal, newSpectro, originalSpectro, layout, spectrolayout) 
+    }
+
     if(e.target.classList.contains("stop")){
         for(i=0; i<stopingBtns.length; i++){
             stopingBtns[i].classList.add("btn-off")
@@ -100,6 +130,9 @@ document.addEventListener("click", (e) => {
         }   
         setTimeout(() => {playButton.classList.remove("hide-play-btn"); }, 50);
         pauseButton.classList.remove("pausing")
+        stopPlaying()
+
+
     }
     if(e.target.classList.contains("pause")){
         if(e.target.classList.contains("pausing") || e.target.classList.contains("btn-off")){
@@ -108,6 +141,7 @@ document.addEventListener("click", (e) => {
             e.target.classList.add("pausing")
         }
     } 
+
 })
 
 var slidersValue = document.getElementsByClassName("slider-value")  
@@ -157,29 +191,3 @@ var spectrolayout = {
 }
 
 
-playBtn.onclick = ()=> {
-    $.ajax({
-        method: 'POST',
-        url: 'http://127.0.0.1:5000/data',
-        dataType: 'json',
-        async: false,
-        data: {},
-        success: function (res, status, xhr) {
-            signal.x = res[0]
-            signal.y = res[1]
-            originalSignal.x = res[0]
-            originalSignal.y = res[2]
-            newSpectro.x = res[4]
-            newSpectro.y = res[3]
-            newSpectro.z = res[5]
-            originalSpectro.x = res[7]
-            originalSpectro.y = res[6]
-            originalSpectro.z = res[8]
-
-        }
-
-    })
-    
-    stopPlot()
-    plotAll(signal, originalSignal, newSpectro, originalSpectro, layout, spectrolayout)  
-}
