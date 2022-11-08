@@ -125,11 +125,12 @@ body{
 }
 
 .btn-on:hover{
-    color: var(--sec-color) !important;
+    color: var(--hover-color) !important;
 }
 
 .pausing{
     color: var(--sec-color) !important;
+    cursor: pointer !important;
 }
 
 .play-speed{
@@ -367,7 +368,7 @@ body{
     margin-top: 4rem;
 }
 
-.sliders-panel input:hover{
+input[type="range"]:hover{
     opacity: 1;
 }
 

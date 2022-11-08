@@ -104,8 +104,10 @@ document.addEventListener("click", (e) => {
     if(e.target.classList.contains("pause")){
         if(e.target.classList.contains("pausing") || e.target.classList.contains("btn-off")){
             e.target.classList.remove("pausing")
+            e.target.classList.add("btn-on")
         } else {
             e.target.classList.add("pausing")
+            e.target.classList.remove("btn-on")
         }
     } 
 })
@@ -151,7 +153,7 @@ var layout = {
 }
 var spectrolayout = {
     width: 540,
-    height: 165,
+    height: 350,
     margin: {l:50, r:50, b:25, t:25, pad:1},
     yaxis:{range:[0,Math.max.apply(Math, originalSpectro.y)]}
 }
@@ -183,3 +185,4 @@ playBtn.onclick = ()=> {
     stopPlot()
     plotAll(signal, originalSignal, newSpectro, originalSpectro, layout, spectrolayout)  
 }
+
