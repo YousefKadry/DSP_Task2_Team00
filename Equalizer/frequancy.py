@@ -35,13 +35,22 @@ points_per_freq = len(xf) / (sr / 2)
 @app.route('/frequancy', methods = ['POST'])
 def edit_freq():
     
-    freq_amp = float(request.values['freqAmp'])
+    freq_amp = int(request.values['freqAmp'])/100
     freq_range = (request.values['freqToChange']).split()
     target_idx1 = int(points_per_freq * int(freq_range[0]))
     target_idx2 = int(points_per_freq * int(freq_range[1]))
-    yf[target_idx1-1: target_idx2] = m[target_idx1-1: target_idx2]*freq_amp/100 
+    if freq_amp > 1:
+        halfFactors = np.linspace(1, freq_amp, int(len(m[target_idx1-1: target_idx2])*0.5))
+        factors = np.concatenate((halfFactors, halfFactors[::-1]))
+    elif freq_amp < 1:
+        halfFactors = np.linspace(freq_amp, 1, int(len(m[target_idx1-1: target_idx2])*0.5))
+        factors = np.concatenate((halfFactors[::-1], halfFactors))
+    else: return
+    yf[target_idx1-1: target_idx2] = [i*j for i,j in zip(factors, m[target_idx1-1: target_idx2])]
+    # yf[target_idx1-1: target_idx2] = m[target_idx1-1: target_idx2]*factors 
 
-    return []
+    return [yf[target_idx1-1: target_idx2].astype(np.int16).tolist(),
+            (m[target_idx1-1: target_idx2]*factors).astype(np.int16).tolist(), factors.tolist()]
 
 @app.route('/data', methods = ['POST'])
 def post_data():

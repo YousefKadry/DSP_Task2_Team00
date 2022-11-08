@@ -212,6 +212,7 @@ let updateData = (sliderInfoObj) => {
         data: {freqToChange: changedFreq,
             freqAmp:sliderInfoObj.freqAmp},
         success: function (res, status, xhr) {
+            console.log(res);
         }
     });
 }
@@ -236,16 +237,55 @@ let plotAll = (signal, originalSignal, newSpectro, originalSpectro, layout) =>{
     Plotly.newPlot('plot4', [newSpectro], spectrolayout)
 
     let plot1 = document.getElementById('plot1')
-//     let plot2 = document.getElementById('plot2')
+    let plot2 = document.getElementById('plot2')
     let plot3 = document.getElementById('plot3')
-//     // let plot4 = document.getElementById('plot4')
+    let plot4 = document.getElementById('plot4')
 
+    plot1.on('plotly_hover', function (eventdata){
+        var pointNum = eventdata.points[0].pointNumber;
+        Plotly.Fx.hover('plot2',[
+            { curveNumber:0, pointNumber:pointNum }
+        ]);
+        })
+        .on('plotly_unhover',function(){
+        Plotly.Fx.hover('plot2',[]);
+        });
+
+    plot2.on('plotly_hover', function (eventdata){
+        var pointNum = eventdata.points[0].pointNumber;
+        Plotly.Fx.hover('plot1',[
+            { curveNumber:0, pointNumber:pointNum }
+        ]);
+        })
+        .on('plotly_unhover',function(){
+        Plotly.Fx.hover('plot1',[]);
+        });
+
+
+        plot3.on('plotly_hover', function (eventdata){
+            var pointNum = eventdata.points[0].pointNumber;
+            Plotly.Fx.hover('plot4',[
+                { curveNumber:0, pointNumber:pointNum }
+            ]);
+            })
+            .on('plotly_unhover',function(){
+            Plotly.Fx.hover('plot4',[]);
+            });
     
+        plot4.on('plotly_hover', function (eventdata){
+            var pointNum = eventdata.points[0].pointNumber;
+            Plotly.Fx.hover('plot3',[
+                { curveNumber:0, pointNumber:pointNum }
+            ]);
+            })
+            .on('plotly_unhover',function(){
+            Plotly.Fx.hover('plot3',[]);
+            });
 
 
     plot1.on("plotly_relayout", function(ed) {
         Plotly.relayout('plot2', ed)
-        console.log('gg')
+        
     });
 
     plot3.on("plotly_relayout", function(ed) {
@@ -257,7 +297,7 @@ let plotAll = (signal, originalSignal, newSpectro, originalSpectro, layout) =>{
     let step =  0
     plotdata = setInterval(async() =>{
         if(step+.25 <=signal.x[signal.x.length-1]){
-            step+= .065
+            step+= .1
             if(step>0){
                 let range = {range:[step-.25, step+.25]}
                 layout['xaxis']= range
@@ -269,7 +309,7 @@ let plotAll = (signal, originalSignal, newSpectro, originalSpectro, layout) =>{
             step = 0
             clearInterval(plotdata)
         } 
-    },65)
+    },100)
 
     
 }
