@@ -16,12 +16,15 @@
 <body>
     <div class="container">
         <div class="control">
-            <input type="button" id="play-btn" value="Browse" class="browse">
+            <form id="upload-file" method="post" enctype="multipart/form-data">
+                <input type="file" id="play-btn" value="Browse" class="browse" name="file">
+                <!-- <button type="submit" hidden id="submit"></button> -->
+            </form>
             <!-- <audio id="audio" src="./Equalizer/static/assets/test.wav"></audio> -->
-            <audio controls hidden>
+            <audio controls id="audio">
                 <!-- <source src="horse.ogg" type="audio/ogg"> -->
-                <source src='' type="audio/wav">
-              </audio>
+                <source  type="audio/wav">
+            </audio>
             <div class="buttons">
                 <div class="button pause btn-off stoping-btns">
                     <i class="fa-solid fa-pause"></i>

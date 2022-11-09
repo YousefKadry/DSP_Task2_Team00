@@ -7,6 +7,35 @@ const modes = {
     option: {numOfSliders:6, name:"option", maxFreq:200, step:1, editRange:true}
 }
 
+let signal = {x:[], y:[], mode: "lines", type: "line", name:'newSignal'}
+let originalSignal = {x:[], y:[], mode: "lines", type: "line", name:'origSignal'}
+let colorScale = [
+    ['0.0', 'rgb(165,0,38)'],
+    ['0.111111111111', 'rgb(215,48,39)'],
+    ['0.222222222222', 'rgb(244,109,67)'],
+    ['0.333333333333', 'rgb(253,174,97)'],
+    ['0.444444444444', 'rgb(254,224,144)'],
+    ['0.555555555556', 'rgb(224,243,248)'],
+    ['0.666666666667', 'rgb(171,217,233)'],
+    ['0.777777777778', 'rgb(116,173,209)'],
+    ['0.888888888889', 'rgb(69,117,180)'],
+    ['1.0', 'rgb(49,54,149)']
+    ]
+let originalSpectro = {x:[], y:[],z:[], type:'heatmap', colorscale:colorScale}
+let newSpectro = {x:[], y:[],z:[], type:'heatmap', colorscale:colorScale}
+let layout = {
+    width: 540,
+    height: 350,
+    margin: {l:50, r:50, b:25, t:25, pad:1},
+    xaxis:{range:[0-.025,0]}
+}
+let spectrolayout = {
+    width: 540,
+    height: 350,
+    margin: {l:50, r:50, b:25, t:25, pad:1},
+    yaxis:{range:[0,Math.max.apply(Math, originalSpectro.y)]}
+}
+
 createModesSliders(modes)
 
 /*################################ adding SLiders ################################*/
@@ -62,6 +91,8 @@ let showBoth = function() {
 let stopingBtns = document.getElementsByClassName("stoping-btns")
 let playButton = document.querySelector(".play")
 let pauseButton = document.querySelector(".pause")
+let stopButton = document.querySelector('.stop')
+let audio = document.getElementById('audio')
 document.addEventListener("click", (e) => {
     if(e.target.classList[0] == "fig-mode"){
         for(i = 0; i < figModes.length; i++){
@@ -97,30 +128,10 @@ document.addEventListener("click", (e) => {
             stopingBtns[i].classList.add("btn-on")
         }
         e.target.classList.add("hide-play-btn")
-        
-        $.ajax({
-            method: 'POST',
-            url: `http://127.0.0.1:5000/${currentMode.name}/data`,
-            dataType: 'json',
-            async: false,
-            data: {},
-            success: function (res, status, xhr) {
-                signal.x = res[0]
-                signal.y = res[1]
-                originalSignal.x = res[0]
-                originalSignal.y = res[2]
-                newSpectro.x = res[4]
-                newSpectro.y = res[3]
-                newSpectro.z = res[5]
-                originalSpectro.x = res[7]
-                originalSpectro.y = res[6]
-                originalSpectro.z = res[8]
-    
-            }
-    
-        })
-        
+        // audio.src = Flask.url_for('static/assets/upload-edit',filename='edited.wav')
+        getData(currentMode, signal, originalSignal, newSpectro, originalSpectro)
         plotAll(signal, originalSignal, newSpectro, originalSpectro, layout, spectrolayout) 
+        play()
     }
 
     if(e.target.classList.contains("stop")){
@@ -162,64 +173,23 @@ if(e.target.className == "speed-slider"){
 }
 })
 
-let playBtn = document.getElementById('play-btn')
-let signal = {x:[], y:[], mode: "lines", type: "line", name:'newSignal'}
-let originalSignal = {x:[], y:[], mode: "lines", type: "line", name:'origSignal'}
-let colorScale = [
-    ['0.0', 'rgb(165,0,38)'],
-    ['0.111111111111', 'rgb(215,48,39)'],
-    ['0.222222222222', 'rgb(244,109,67)'],
-    ['0.333333333333', 'rgb(253,174,97)'],
-    ['0.444444444444', 'rgb(254,224,144)'],
-    ['0.555555555556', 'rgb(224,243,248)'],
-    ['0.666666666667', 'rgb(171,217,233)'],
-    ['0.777777777778', 'rgb(116,173,209)'],
-    ['0.888888888889', 'rgb(69,117,180)'],
-    ['1.0', 'rgb(49,54,149)']
-    ]
-let originalSpectro = {x:[], y:[],z:[], type:'heatmap', colorscale:colorScale}
-let newSpectro = {x:[], y:[],z:[], type:'heatmap', colorscale:colorScale}
-var layout = {
-    width: 540,
-    height: 350,
-    margin: {l:50, r:50, b:25, t:25, pad:1},
-    xaxis:{range:[0-.025,0]}
-}
-var spectrolayout = {
-    width: 540,
-    height: 350,
-    margin: {l:50, r:50, b:25, t:25, pad:1},
-    yaxis:{range:[0,Math.max.apply(Math, originalSpectro.y)]}
-}
 
 
-<<<<<<< HEAD
-=======
-playBtn.onclick = ()=> {
+let browseBtn = document.getElementsByClassName('browse')
+// document.getElementById('submit').addEventListener('click')
+browseBtn[0].addEventListener('change', ()=> {
+    console.log('gg')
+    var form_data = new FormData($('#upload-file')[0]);
     $.ajax({
-        method: 'POST',
-        url: 'http://127.0.0.1:5000/data',
-        dataType: 'json',
-        async: false,
-        data: {},
-        success: function (res, status, xhr) {
-            signal.x = res[0]
-            signal.y = res[1]
-            originalSignal.x = res[0]
-            originalSignal.y = res[2]
-            newSpectro.x = res[4]
-            newSpectro.y = res[3]
-            newSpectro.z = res[5]
-            originalSpectro.x = res[7]
-            originalSpectro.y = res[6]
-            originalSpectro.z = res[8]
-
-        }
-
-    })
-    
-    stopPlot()
-    plotAll(signal, originalSignal, newSpectro, originalSpectro, layout, spectrolayout)  
+        type: 'POST',
+        url: `http://127.0.0.1:5000/${currentMode.name}/upload`,
+        data: form_data,
+        contentType: false,
+        cache: false,
+        processData: false,
+        success: function(res) {
+            console.log(res)
+        },
+    });
 }
-
->>>>>>> 1f6dd41b4b18af58f7669646590f174b18b6adea
+)

@@ -208,8 +208,7 @@ let updateData = (sliderInfoObj) => {
 
 
 
-let plotdata
-let step =  0
+
 let plotAll = (signal, originalSignal, newSpectro, originalSpectro, layout, spectrolayout) =>{
     let maxAmp = Math.max.apply(Math, originalSignal.y);
     let yscale = {range:[-maxAmp, maxAmp]}
@@ -224,22 +223,22 @@ let plotAll = (signal, originalSignal, newSpectro, originalSpectro, layout, spec
     let plot3 = document.getElementById('plot3')
     let plot4 = document.getElementById('plot4')
 
-
     syncHover(plot1, plot2)
     syncHover(plot3, plot4)
 
     plot1.on("plotly_relayout", function(ed) {
         Plotly.relayout('plot2', ed)
-        
     });
 
     plot3.on("plotly_relayout", function(ed) {
         Plotly.relayout('plot4', ed)
-    
         });
     
     
-    
+}
+let plotdata
+let step =  0
+let play = ()=>{
     plotdata = setInterval(async() =>{
         if(step+.25 <=signal.x[signal.x.length-1]){
             step+= .1
@@ -250,13 +249,14 @@ let plotAll = (signal, originalSignal, newSpectro, originalSpectro, layout, spec
             }
         }
         else{
-
             stopPlaying()
+            stopButton.click()
+            
         } 
     },100)
 
-    
 }
+
 let stopPlaying = (interval = plotdata)=>{
     if(interval){
     clearInterval(interval)
@@ -295,4 +295,28 @@ let syncHover = (plotdev1, plotdev2)=>{
         .on('plotly_unhover',function(){
         Plotly.Fx.hover(plotdev1,[]);
         });
+}
+
+let getData = (currentMode, signal, originalSignal, newSpectro, originalSpectro)=>{
+    $.ajax({
+        method: 'POST',
+        url: `http://127.0.0.1:5000/${currentMode.name}/data`,
+        dataType: 'json',
+        async: false,
+        data: {},
+        success: function (res, status, xhr) {
+            signal.x = res[0]
+            signal.y = res[1]
+            originalSignal.x = res[0]
+            originalSignal.y = res[2]
+            newSpectro.x = res[4]
+            newSpectro.y = res[3]
+            newSpectro.z = res[5]
+            originalSpectro.x = res[7]
+            originalSpectro.y = res[6]
+            originalSpectro.z = res[8]
+
+        }
+
+    })
 }
