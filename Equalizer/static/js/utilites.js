@@ -116,37 +116,59 @@ let createSlidersObj = (mode, sliderFreqValues, labels) => {
 }
 
 
+let sidersRanges = {frequency:[[1,500], [500, 1000], [1000, 1500], [1500, 2000]
+    , [2000, 2500], [2500, 3000] ,[3000, 3500] ,[3500, 4000] ,[4000, 4500] ,[4500, 10000]]
+    ,vowels:[[1,500], [500, 1000], [1000, 1500], [1500, 2000]
+    , [2000, 2500], [2500, 3000] ,[3000, 3500] ,[3500, 4000] ,[4000, 4500]]
+    ,musicalInstruments:[[1,500], [500, 1000], [1000, 1500], [1500, 2000]
+    , [2000, 2500], [2500, 3000] ,[3000, 3500] ,[3500, 4000]]
+    ,medicalSignal:[[1,500], [500, 1000], [1000, 1500], [1500, 2000]
+    , [2000, 2500], [2500, 3000] ,[3000, 3500]]
+    ,option:[[1,500], [500, 1000], [1000, 1500], [1500, 2000]
+    , [2000, 2500], [2500, 3000]]}
+
+let slidersLabels = {frequency:['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8', 'label9', 'label10']
+    ,vowels:['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8', 'label9']
+    ,musicalInstruments:['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8']
+    ,medicalSignal:['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7']
+    ,option:['label1', 'label2', 'label3', 'label4', 'label5', 'label6']}
+
 let createModesSliders = (modes)=>{
-    let freqSlidersRange = [[1,500], [500, 1000], [1000, 1500], [1500, 2000]
-, [2000, 2500], [2500, 3000] ,[3000, 3500] ,[3500, 4000] ,[4000, 4500] ,[4500, 5000]]
 
-let vowelsSlidersValues = [[1,500], [500, 1000], [1000, 1500], [1500, 2000]
-, [2000, 2500], [2500, 3000] ,[3000, 3500] ,[3500, 4000] ,[4000, 4500]]
+    
 
-let musicSlidersValues = [[1,500], [500, 1000], [1000, 1500], [1500, 2000]
-, [2000, 2500], [2500, 3000] ,[3000, 3500] ,[3500, 4000]]
+    // let freqSlidersRange = [[1,500], [500, 1000], [1000, 1500], [1500, 2000]
+    // , [2000, 2500], [2500, 3000] ,[3000, 3500] ,[3500, 4000] ,[4000, 4500] ,[4500, 5000]]
 
-let medicalSlidersValues = [[1,500], [500, 1000], [1000, 1500], [1500, 2000]
-, [2000, 2500], [2500, 3000] ,[3000, 3500]]
+    // let vowelsSlidersValues = [[1,500], [500, 1000], [1000, 1500], [1500, 2000]
+    // , [2000, 2500], [2500, 3000] ,[3000, 3500] ,[3500, 4000] ,[4000, 4500]]
 
-let optionSlidersValues = [[1,500], [500, 1000], [1000, 1500], [1500, 2000]
-, [2000, 2500], [2500, 3000]]
+    // let musicSlidersValues = [[1,500], [500, 1000], [1000, 1500], [1500, 2000]
+    // , [2000, 2500], [2500, 3000] ,[3000, 3500] ,[3500, 4000]]
 
-let freqSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8', 'label9', 'label10']
+    // let medicalSlidersValues = [[1,500], [500, 1000], [1000, 1500], [1500, 2000]
+    // , [2000, 2500], [2500, 3000] ,[3000, 3500]]
 
-let vowelsSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8', 'label9']
+    // let optionSlidersValues = [[1,500], [500, 1000], [1000, 1500], [1500, 2000]
+    // , [2000, 2500], [2500, 3000]]
 
-let musicSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8']
+   
+// let freqSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8', 'label9', 'label10']
 
-let medicalSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7']
+// let vowelsSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8', 'label9']
 
-let optionSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'label6']
+// let musicSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8']
 
-modes.freq['slidersInfo'] = createSlidersObj(modes.freq, freqSlidersRange, freqSlidersLabel)
-modes.vowels['slidersInfo'] = createSlidersObj(modes.vowels, vowelsSlidersValues, vowelsSlidersLabel)
-modes.musicalInstruments['slidersInfo'] = createSlidersObj(modes.musicalInstruments, musicSlidersValues, musicSlidersLabel)
-modes.medicalSignal['slidersInfo'] = createSlidersObj(modes.medicalSignal, medicalSlidersValues, medicalSlidersLabel)
-modes.option['slidersInfo'] = createSlidersObj(modes.option, optionSlidersValues, optionSlidersLabel)
+// let medicalSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7']
+
+// let optionSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'label6']
+
+
+modes.freq['slidersInfo'] = createSlidersObj(modes.freq, sidersRanges[modes.freq.name], slidersLabels[modes.freq.name])
+modes.vowels['slidersInfo'] = createSlidersObj(modes.vowels, sidersRanges[modes.vowels.name], slidersLabels[modes.vowels.name])
+modes.musicalInstruments['slidersInfo'] = createSlidersObj(modes.musicalInstruments, sidersRanges[modes.musicalInstruments.name], slidersLabels[modes.musicalInstruments.name])
+modes.medicalSignal['slidersInfo'] = createSlidersObj(modes.medicalSignal, sidersRanges[modes.medicalSignal.name], slidersLabels[modes.medicalSignal.name])
+modes.option['slidersInfo'] = createSlidersObj(modes.option, sidersRanges[modes.option.name], slidersLabels[modes.option.name])
 }
 
 
@@ -238,10 +260,11 @@ let plotAll = (signal, originalSignal, newSpectro, originalSpectro, layout, spec
 }
 let plotdata
 let step =  0
+let speed = 0.1
 let play = ()=>{
-    plotdata = setInterval(async() =>{
+    plotdata = setInterval(() =>{
         if(step+.25 <=signal.x[signal.x.length-1]){
-            step+= .1
+            step+= speed
             if(step>0){
                 let range = {range:[step-.25, step+.25]}
                 layout['xaxis']= range
@@ -254,6 +277,8 @@ let play = ()=>{
             
         } 
     },100)
+    audio.play()
+    audio.playbackRate = speedSlider.value
 
 }
 
@@ -264,6 +289,11 @@ let stopPlaying = (interval = plotdata)=>{
     let range = {range:[0-.025,0]}
                 layout['xaxis']= range
                 setLayout(layout)    
+    }
+    audio.load()
+    if(paused){
+        clearInterval(interval)
+        paused = false
     }
 }
 
@@ -319,4 +349,41 @@ let getData = (currentMode, signal, originalSignal, newSpectro, originalSpectro)
         }
 
     })
+}
+let audio = document.getElementById('audio')
+let getAudio =  ()=>{
+    $.ajax({
+        method: 'GET',
+        url: 'http://127.0.0.1:5000/audio',
+        dataType: 'json',
+        async: false,
+        data: {},
+        success: function (res, status, xhr) {
+            
+            }
+        })
+
+        audio.src = 'http://127.0.0.1:5000/audio'
+
+}
+
+let paused = false
+let pause = ()=>{
+    console.log('pause')
+    if(!paused){
+        clearInterval(plotdata)
+        audio.pause()
+        paused = true
+    }
+    else{
+        play()
+        paused = false
+    }
+
+}
+
+let controlSpeed = (speedValue)=>{
+    let originalSpeed = .1
+    speed = originalSpeed*speedValue
+    audio.playbackRate = speedValue
 }

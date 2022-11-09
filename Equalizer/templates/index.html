@@ -17,11 +17,12 @@
     <div class="container">
         <div class="control">
             <form id="upload-file" method="post" enctype="multipart/form-data">
-                <input type="file" id="play-btn" value="Browse" class="browse" name="file">
+                
+                <input type="file" id="browse-btn" value="Browse" class="browse" name="file" label="Browse">
                 <!-- <button type="submit" hidden id="submit"></button> -->
             </form>
             <!-- <audio id="audio" src="./Equalizer/static/assets/test.wav"></audio> -->
-            <audio controls id="audio">
+            <audio controls hidden id="audio" >
                 <!-- <source src="horse.ogg" type="audio/ogg"> -->
                 <source  type="audio/wav">
             </audio>
@@ -41,7 +42,7 @@
                     <h6>Play Speed</h6>
                     <div class="slider-value">x1</div>
                 </div>
-                <input type="range" min="0.25" max="2" value="1" step="0.25" class="speed-slider">
+                <input type="range" min="0.25" max="2" value="1" step="0.25" class="speed-slider" id="speedControl">
             </div>
             
         </div>

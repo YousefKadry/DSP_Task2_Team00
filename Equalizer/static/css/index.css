@@ -1,9 +1,9 @@
 :root{
-    --primary-color: #361134;
-    --sec-color: #B0228C;
-    --darkest-color: #1f081e;
-    --hover-color: #520d50;
-    --active-text: white;
+    --primary-color: #022f3a;
+    --sec-color: #005c7d;
+    --darkest-color: #000000;
+    --hover-color: #5ea9f8;
+    --active-text: rgb(255, 255, 255);
     --inactive-text: #a9a8a8;
     --inactive-button: #7d7c7c;
     --border-radius: 15px
@@ -41,18 +41,47 @@ body{
     position: relative;
 }
 
-.control input#play-btn{
+.control input#browse-btn{
     width: 100%;
     height: 10vh;
-    color: var(--active-text);
+    /* color: transparent; */
     background-color: var(--darkest-color);
     border-radius: var(--border-radius);
     transition: 0.3s;
     border: none;
+    cursor: pointer;
 }
 
-.control input#play-btn:hover{
+.control input#browse-btn:hover{
     background-color: var(--hover-color);
+}
+
+.control input#browse-btn::-webkit-file-upload-button {
+    visibility: hidden;
+}
+
+.control input#browse-btn::before {
+    content: 'Browse';
+    color: var(--active-text);
+    display: inline-block;
+    /* background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);
+    border: 1px solid #999; */
+    border-radius: 3px;
+    padding: 5px 8px;
+    outline: none;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    cursor: pointer;
+    /* text-shadow: 1px 1px #fff; */
+    font-weight: 400;
+    font-size: 16pt;
+    display: flex;
+    justify-content: center;
+    line-height: 3.4;
+}
+
+.control input#browse-btn::before:hover{
+    color:var(--sec-color) !important;
 }
 
 .buttons{

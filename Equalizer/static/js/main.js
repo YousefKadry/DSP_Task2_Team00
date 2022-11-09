@@ -2,8 +2,8 @@ const selectedModes = document.getElementsByClassName("mode")
 const modes = {
     freq: {numOfSliders:10, name:"frequency", maxFreq:200, step:1, editRange:true},
     vowels: {numOfSliders:9, name:"vowels", maxFreq:200, step:1, editRange:true},
-    musicalInstruments: {numOfSliders:8, name:"musical-instruments", maxFreq:200, step:1, editRange:true},
-    medicalSignal: {numOfSliders:7, name:"medical-signal", maxFreq:200, step:1, editRange:true},
+    musicalInstruments: {numOfSliders:8, name:"musicalInstruments", maxFreq:200, step:1, editRange:true},
+    medicalSignal: {numOfSliders:7, name:"medicalSignal", maxFreq:200, step:1, editRange:true},
     option: {numOfSliders:6, name:"option", maxFreq:200, step:1, editRange:true}
 }
 
@@ -92,8 +92,7 @@ let stopingBtns = document.getElementsByClassName("stoping-btns")
 let playButton = document.querySelector(".play")
 let pauseButton = document.querySelector(".pause")
 let stopButton = document.querySelector('.stop')
-let audio = document.getElementById('audio')
-document.addEventListener("click", (e) => {
+document.addEventListener("click", async(e) => {
     if(e.target.classList[0] == "fig-mode"){
         for(i = 0; i < figModes.length; i++){
             if(figModes[i].classList[2] == "fig-mode-active"){
@@ -128,13 +127,15 @@ document.addEventListener("click", (e) => {
             stopingBtns[i].classList.add("btn-on")
         }
         e.target.classList.add("hide-play-btn")
-        // audio.src = Flask.url_for('static/assets/upload-edit',filename='edited.wav')
+        audio.src = ''
+        getAudio()
         getData(currentMode, signal, originalSignal, newSpectro, originalSpectro)
         plotAll(signal, originalSignal, newSpectro, originalSpectro, layout, spectrolayout) 
+        audio.src = 'http://127.0.0.1:5000/audio'
         play()
     }
 
-    if(e.target.classList.contains("stop")){
+    if(e.target.classList.contains("stop") && e.target.classList.contains("btn-on")){
         for(i=0; i<stopingBtns.length; i++){
             stopingBtns[i].classList.add("btn-off")
             stopingBtns[i].classList.remove("btn-on")
@@ -145,14 +146,16 @@ document.addEventListener("click", (e) => {
 
 
     }
-    if(e.target.classList.contains("pause")){
+    if(e.target.classList.contains("pause") && e.target.classList.contains("btn-on")){
         if(e.target.classList.contains("pausing") || e.target.classList.contains("btn-off")){
             e.target.classList.remove("pausing")
             e.target.classList.add("btn-on")
         } else {
             e.target.classList.add("pausing")
-            e.target.classList.remove("btn-on")
+            // e.target.classList.remove("btn-on")
         }
+
+        pause()
     } 
 
 })
@@ -191,5 +194,16 @@ browseBtn[0].addEventListener('change', ()=> {
             console.log(res)
         },
     });
+    stopButton.click()
+    audio.src = ''
+    currentMode['slidersInfo'] = createSlidersObj(currentMode, sidersRanges[currentMode.name], slidersLabels[currentMode.name])
+    slidersObj = currentMode['slidersInfo']
+    createSlidersElemnts(slidersObj)
+
 }
 )
+
+let speedSlider = document.getElementById('speedControl')
+speedSlider.addEventListener('mouseup', ()=>{
+    controlSpeed(speedSlider.value)
+})

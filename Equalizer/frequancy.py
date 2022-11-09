@@ -52,7 +52,7 @@ def upload():
     xf = rfftfreq(len(yf), 1 / sr)
     m = yf.copy()
     points_per_freq = len(xf) / (sr / 2)
-    return [points_per_freq]
+    return []
 
 
 @app.route('/frequency', methods = ['POST'])
@@ -60,10 +60,10 @@ def edit_freq():
 
     freq_amp = int(request.values['freqAmp'])/100
     freq_range = (request.values['freqToChange']).split()
-    target_idx1 = int(points_per_freq * int(freq_range[0]))
-    target_idx2 = int(points_per_freq * int(freq_range[1]))
+    target_idx1 = int(points_per_freq * int(freq_range[0])*2)
+    target_idx2 = int(points_per_freq * int(freq_range[1])*2)
     
-    # yf[target_idx1-1: target_idx2] = m[target_idx1-1: target_idx2]*freq_amp 
+    yf[target_idx1-1: target_idx2] = m[target_idx1-1: target_idx2]*freq_amp 
 
     return [yf.astype(np.int16).tolist()]
 
@@ -75,7 +75,9 @@ def post_data():
     # data = [xf,list(yf), 'gg']
     y1 = irfft(yf).astype(np.int16)
     x = list(np.linspace(0, len(y1)/sr, len(y1)))
-    wavfile.write('Equalizer/static/assets/edited.wav', sr, y1)
+    if(os.path.exists("Equalizer/static/assets/upload-edit/edited.wav")):
+        os.remove("Equalizer/static/assets/upload-edit/edited.wav")
+    wavfile.write('Equalizer/static/assets/upload-edit/edited1.wav', sr, y1)
     normalizedY = y1 / (2.**15)
     N = 512 
     w = signal.blackman(N)
