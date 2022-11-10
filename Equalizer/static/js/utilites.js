@@ -2,7 +2,7 @@ let createSlidersObj = (mode, sliderFreqValues, labels) => {
     let slidersObj = {}
         for(let i=1; i <= mode.numOfSliders; i++){
             slidersObj[`${mode.name}-slider-${i}`] ={freqToChange: sliderFreqValues[i-1]
-                                                    ,freqAmp: 1, modeName: mode.name, label:labels[i-1]}
+                                                    ,freqAmp: 1.0, modeName: mode.name, label:labels[i-1]}
         }
         piano_freq= [16.35160						
             ,17.32391						
@@ -134,12 +134,6 @@ let slidersLabels = {frequency:['label1', 'label2', 'label3', 'label4', 'label5'
     ,option:['label1', 'label2', 'label3', 'label4', 'label5', 'label6']}
 
 let createModesSliders = (modes)=>{
-
-    
-
-    
-
-
 modes.freq['slidersInfo'] = createSlidersObj(modes.freq, sidersRanges[modes.freq.name], slidersLabels[modes.freq.name])
 modes.vowels['slidersInfo'] = createSlidersObj(modes.vowels, sidersRanges[modes.vowels.name], slidersLabels[modes.vowels.name])
 modes.musicalInstruments['slidersInfo'] = createSlidersObj(modes.musicalInstruments, sidersRanges[modes.musicalInstruments.name], slidersLabels[modes.musicalInstruments.name])
@@ -165,12 +159,13 @@ let createSlidersElemnts = (slidersInfo)=>{
         input.min = 0
         input.max = currentMode.maxFreq
         input.value = sliderObj.freqAmp
+
         input.step = currentMode.step
         input.className = `slider ${sliderId}`
 
         let value= document.createElement("div")
         
-        value.innerHTML= input.value
+        value.innerHTML= sliderObj.freqAmp
         value.className = `slider-value ${sliderId}`
 
         slider.appendChild(input)
@@ -180,7 +175,7 @@ let createSlidersElemnts = (slidersInfo)=>{
     
         let currentSlider = document.getElementById(sliderId)
         currentSlider.addEventListener('mouseup', () =>{
-            sliderObj.freqAmp = currentSlider.value
+            sliderObj.freqAmp = parseFloat(currentSlider.value)
             updateData(sliderObj) 
         })
             
@@ -199,7 +194,7 @@ let updateData = (sliderInfoObj) => {
         data: {freqToChange: changedFreq,
             freqAmp:sliderInfoObj.freqAmp},
         success: function (res, status, xhr) {
-            console.log(res);
+            console.log(res)
         }
     });
 }
@@ -302,8 +297,8 @@ let syncHover = (plotdev1, plotdev2)=>{
         Plotly.Fx.hover(plotdev1,[]);
         });
 }
-let getData = async (currentMode, signal, originalSignal, newSpectro, originalSpectro)=>{
-    await $.ajax({
+let getData = (currentMode, signal, originalSignal, newSpectro, originalSpectro)=>{
+    $.ajax({
         method: 'POST',
         url: `http://127.0.0.1:5000/${currentMode.name}/data`,
         dataType: 'json',
@@ -320,7 +315,7 @@ let getData = async (currentMode, signal, originalSignal, newSpectro, originalSp
             originalSpectro.x = res[7]
             originalSpectro.y = res[6]
             originalSpectro.z = res[8]
-
+            audioName = res[9]
         }
 
     })
@@ -328,13 +323,13 @@ let getData = async (currentMode, signal, originalSignal, newSpectro, originalSp
 }
 let audio = document.getElementById('audio')
 // let audio
-let j = 0
+let audioName
 let getAudio =  ()=>{
     
-       
-        audio.src = Flask.url_for('static', {"filename":`edited${j}.wav`})
 
-        j++
+        audio.src = Flask.url_for('static', {"filename":`${audioName}`})
+
+        
         
         // $.ajax({
         //     method: 'GET',
@@ -353,7 +348,6 @@ let getAudio =  ()=>{
 
 let paused = false
 let pause = ()=>{
-    console.log('pause')
     if(!paused){
         clearInterval(plotdata)
         audio.pause()

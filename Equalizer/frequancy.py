@@ -1,6 +1,6 @@
 from Equalizer import app
 from flask import request
-from scipy.fft import rfft, rfftfreq, irfft
+from scipy.fft import rfft, rfftfreq, irfft, fftfreq
 from scipy.io import wavfile
 from scipy import signal
 import numpy as np
@@ -49,7 +49,7 @@ def upload():
     global sr, song, yf, xf, m, points_per_freq   
     sr, song = wavfile.read("Equalizer/static/assets/upload-edit/uploaded.wav")
     yf = rfft(song)
-    xf = rfftfreq(len(yf), 1 / sr)
+    xf = fftfreq(len(yf), 1 / sr)
     m = yf.copy()
     points_per_freq = len(xf) / (sr / 2)
     return []
@@ -65,7 +65,7 @@ def edit_freq():
     
     yf[target_idx1-1: target_idx2] = m[target_idx1-1: target_idx2]*freq_amp 
 
-    return [yf.astype(np.int16).tolist()]
+    return [len(yf.astype(np.int16).tolist()), max(xf.astype(np.int16).tolist()), xf.astype(np.int16).tolist()[int(points_per_freq *500)], points_per_freq]
 
 @app.route('/frequency/data', methods = ['POST'])
 def post_data():
@@ -82,7 +82,6 @@ def post_data():
         os.remove(f"Equalizer/static/edited{i+1}.wav")
     wavfile.write(f"Equalizer/static/edited{i}.wav", sr, y1)
     i+=1
-    time.sleep(3)
     normalizedY = y1 / (2.**15)
     N = 512 
     w = signal.blackman(N)
@@ -97,7 +96,7 @@ def post_data():
     
     
     return [sampledx,  sampledy, sampledSong, f.tolist(), t.tolist(),
-            freqAmp.tolist(), orignalF.tolist(), orignalT.tolist(), orignalFreqAmp.tolist()]
+            freqAmp.tolist(), orignalF.tolist(), orignalT.tolist(), orignalFreqAmp.tolist(), f'edited{i-1}.wav']
     
     
     

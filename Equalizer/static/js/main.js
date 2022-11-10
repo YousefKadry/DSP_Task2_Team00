@@ -127,7 +127,7 @@ document.addEventListener("click", async(e) => {
             stopingBtns[i].classList.add("btn-on")
         }
         e.target.classList.add("hide-play-btn")
-        await getData(currentMode, signal, originalSignal, newSpectro, originalSpectro)
+        getData(currentMode, signal, originalSignal, newSpectro, originalSpectro)
         plotAll(signal, originalSignal, newSpectro, originalSpectro, layout, spectrolayout) 
         play()
     }
@@ -191,7 +191,6 @@ browseBtn[0].addEventListener('change', ()=> {
         cache: false,
         processData: false,
         success: function(res) {
-            console.log(res)
         },
     });
     stopButton.click()
