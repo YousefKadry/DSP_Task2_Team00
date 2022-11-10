@@ -58,7 +58,7 @@ def upload():
 @app.route('/frequency', methods = ['POST'])
 def edit_freq():
 
-    freq_amp = int(request.values['freqAmp'])
+    freq_amp = float(request.values['freqAmp'])
     freq_range = (request.values['freqToChange']).split()
     target_idx1 = int(points_per_freq * int(freq_range[0])*2)
     target_idx2 = int(points_per_freq * int(freq_range[1])*2)

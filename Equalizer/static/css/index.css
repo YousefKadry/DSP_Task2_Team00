@@ -84,6 +84,13 @@ body{
     color:var(--sec-color) !important;
 }
 
+.uploaded-file-label{
+    padding-left: 1.5vw;
+    color: var(--active-text);
+    margin-top: -2vh;
+    font-weight: 400;
+}
+
 .buttons{
     position: absolute;
     bottom: 5vh;
@@ -109,7 +116,7 @@ body{
 .button.play{
     background-color: var(--sec-color);
     border-radius: 50%;
-    color: white ;
+    color: var(--active-text) ;
     width: 4vw;
     height: 4vw;
     text-align: center;
@@ -117,6 +124,11 @@ body{
     align-items: center;
     justify-content: center;
     cursor: pointer;
+}
+
+.button.play.btn-off:hover{
+    background-color: var(--sec-color);
+    color: var(--active-text)
 }
 
 .button.play:hover{

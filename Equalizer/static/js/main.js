@@ -121,7 +121,7 @@ document.addEventListener("click", async(e) => {
 
     }
 
-    if(e.target.classList[1] == "play"){
+    if(e.target.classList[1] == "play" && !e.target.classList.contains("btn-off")){
         for(i=0; i<stopingBtns.length; i++){
             stopingBtns[i].classList.remove("btn-off")
             stopingBtns[i].classList.add("btn-on")
@@ -178,7 +178,10 @@ if(e.target.className == "speed-slider"){
 let browseBtn = document.getElementsByClassName('browse')
 // document.getElementById('submit').addEventListener('click')
 browseBtn[0].addEventListener('change', ()=> {
-    console.log('gg')
+    playButton.classList.remove("btn-off")
+    var file = browseBtn[0].files[0];  
+    var uploadedFileName = file.name;
+    document.querySelector(".uploaded-file-label").innerHTML = uploadedFileName
     var form_data = new FormData($('#upload-file')[0]);
     $.ajax({
         type: 'POST',
