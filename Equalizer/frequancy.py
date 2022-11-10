@@ -1,11 +1,11 @@
 from Equalizer import app
-from flask import request, json, jsonify
+from flask import request
 from scipy.fft import rfft, rfftfreq, irfft
 from scipy.io import wavfile
 from scipy import signal
 import numpy as np
-import scipy.io
 import os
+import time
 
 # df = pd.read_csv('Equalizer/static/assets/Signal (10).csv')
 # signal = list(df['amplitude'])
@@ -38,7 +38,7 @@ song = 0
 xf = 0
 m = 0
 points_per_freq = 0
-
+i = 0
 @app.route('/frequency/upload', methods = ['POST'])
 def upload():
     if request.method == 'POST':
@@ -58,7 +58,7 @@ def upload():
 @app.route('/frequency', methods = ['POST'])
 def edit_freq():
 
-    freq_amp = int(request.values['freqAmp'])/100
+    freq_amp = int(request.values['freqAmp'])
     freq_range = (request.values['freqToChange']).split()
     target_idx1 = int(points_per_freq * int(freq_range[0])*2)
     target_idx2 = int(points_per_freq * int(freq_range[1])*2)
@@ -75,9 +75,14 @@ def post_data():
     # data = [xf,list(yf), 'gg']
     y1 = irfft(yf).astype(np.int16)
     x = list(np.linspace(0, len(y1)/sr, len(y1)))
-    if(os.path.exists("Equalizer/static/assets/upload-edit/edited.wav")):
-        os.remove("Equalizer/static/assets/upload-edit/edited.wav")
-    wavfile.write('Equalizer/static/assets/upload-edit/edited1.wav', sr, y1)
+    global i
+    if(os.path.exists(f"Equalizer/static/edited{i-1}.wav")):
+        os.remove(f"Equalizer/static/edited{i-1}.wav")
+    if(os.path.exists(f"Equalizer/static/edited{i+1}.wav")):
+        os.remove(f"Equalizer/static/edited{i+1}.wav")
+    wavfile.write(f"Equalizer/static/edited{i}.wav", sr, y1)
+    i+=1
+    time.sleep(3)
     normalizedY = y1 / (2.**15)
     N = 512 
     w = signal.blackman(N)

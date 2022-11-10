@@ -2,7 +2,7 @@ let createSlidersObj = (mode, sliderFreqValues, labels) => {
     let slidersObj = {}
         for(let i=1; i <= mode.numOfSliders; i++){
             slidersObj[`${mode.name}-slider-${i}`] ={freqToChange: sliderFreqValues[i-1]
-                                                    ,freqAmp: 100, modeName: mode.name, label:labels[i-1]}
+                                                    ,freqAmp: 1, modeName: mode.name, label:labels[i-1]}
         }
         piano_freq= [16.35160						
             ,17.32391						
@@ -117,7 +117,7 @@ let createSlidersObj = (mode, sliderFreqValues, labels) => {
 
 
 let sidersRanges = {frequency:[[1,500], [500, 1000], [1000, 1500], [1500, 2000]
-    , [2000, 2500], [2500, 3000] ,[3000, 3500] ,[3500, 4000] ,[4000, 4500] ,[4500, 10000]]
+    , [2000, 2500], [2500, 3000] ,[3000, 3500] ,[3500, 4000] ,[4000, 4500] ,[4500, 5000]]
     ,vowels:[[1,500], [500, 1000], [1000, 1500], [1500, 2000]
     , [2000, 2500], [2500, 3000] ,[3000, 3500] ,[3500, 4000] ,[4000, 4500]]
     ,musicalInstruments:[[1,500], [500, 1000], [1000, 1500], [1500, 2000]
@@ -137,31 +137,7 @@ let createModesSliders = (modes)=>{
 
     
 
-    // let freqSlidersRange = [[1,500], [500, 1000], [1000, 1500], [1500, 2000]
-    // , [2000, 2500], [2500, 3000] ,[3000, 3500] ,[3500, 4000] ,[4000, 4500] ,[4500, 5000]]
-
-    // let vowelsSlidersValues = [[1,500], [500, 1000], [1000, 1500], [1500, 2000]
-    // , [2000, 2500], [2500, 3000] ,[3000, 3500] ,[3500, 4000] ,[4000, 4500]]
-
-    // let musicSlidersValues = [[1,500], [500, 1000], [1000, 1500], [1500, 2000]
-    // , [2000, 2500], [2500, 3000] ,[3000, 3500] ,[3500, 4000]]
-
-    // let medicalSlidersValues = [[1,500], [500, 1000], [1000, 1500], [1500, 2000]
-    // , [2000, 2500], [2500, 3000] ,[3000, 3500]]
-
-    // let optionSlidersValues = [[1,500], [500, 1000], [1000, 1500], [1500, 2000]
-    // , [2000, 2500], [2500, 3000]]
-
-   
-// let freqSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8', 'label9', 'label10']
-
-// let vowelsSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8', 'label9']
-
-// let musicSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8']
-
-// let medicalSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7']
-
-// let optionSlidersLabel = ['label1', 'label2', 'label3', 'label4', 'label5', 'label6']
+    
 
 
 modes.freq['slidersInfo'] = createSlidersObj(modes.freq, sidersRanges[modes.freq.name], slidersLabels[modes.freq.name])
@@ -326,9 +302,8 @@ let syncHover = (plotdev1, plotdev2)=>{
         Plotly.Fx.hover(plotdev1,[]);
         });
 }
-
-let getData = (currentMode, signal, originalSignal, newSpectro, originalSpectro)=>{
-    $.ajax({
+let getData = async (currentMode, signal, originalSignal, newSpectro, originalSpectro)=>{
+    await $.ajax({
         method: 'POST',
         url: `http://127.0.0.1:5000/${currentMode.name}/data`,
         dataType: 'json',
@@ -349,21 +324,30 @@ let getData = (currentMode, signal, originalSignal, newSpectro, originalSpectro)
         }
 
     })
+    getAudio()
 }
 let audio = document.getElementById('audio')
+// let audio
+let j = 0
 let getAudio =  ()=>{
-    $.ajax({
-        method: 'GET',
-        url: 'http://127.0.0.1:5000/audio',
-        dataType: 'json',
-        async: false,
-        data: {},
-        success: function (res, status, xhr) {
-            
-            }
-        })
+    
+       
+        audio.src = Flask.url_for('static', {"filename":`edited${j}.wav`})
 
-        audio.src = 'http://127.0.0.1:5000/audio'
+        j++
+        
+        // $.ajax({
+        //     method: 'GET',
+        //     url: 'http://127.0.0.1:5000/audio',
+        //     dataType: 'json',
+        //     async: false,
+        //     data: {},
+        //     success: function (res, status, xhr) {
+                
+        //         }
+        //     })
+    // audio = new Audio(Flask.url_for('static', {"filename":'edited.wav'}))
+    
 
 }
 

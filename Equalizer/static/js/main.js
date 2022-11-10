@@ -1,10 +1,10 @@
 const selectedModes = document.getElementsByClassName("mode")
 const modes = {
-    freq: {numOfSliders:10, name:"frequency", maxFreq:200, step:1, editRange:true},
-    vowels: {numOfSliders:9, name:"vowels", maxFreq:200, step:1, editRange:true},
-    musicalInstruments: {numOfSliders:8, name:"musicalInstruments", maxFreq:200, step:1, editRange:true},
-    medicalSignal: {numOfSliders:7, name:"medicalSignal", maxFreq:200, step:1, editRange:true},
-    option: {numOfSliders:6, name:"option", maxFreq:200, step:1, editRange:true}
+    freq: {numOfSliders:10, name:"frequency", maxFreq:10, step:0.1, editRange:true},
+    vowels: {numOfSliders:9, name:"vowels", maxFreq:10, step:0.1, editRange:true},
+    musicalInstruments: {numOfSliders:8, name:"musicalInstruments", maxFreq:10, step:0.1, editRange:true},
+    medicalSignal: {numOfSliders:7, name:"medicalSignal", maxFreq:10, step:0.1, editRange:true},
+    option: {numOfSliders:6, name:"option", maxFreq:10, step:0.1, editRange:true}
 }
 
 let signal = {x:[], y:[], mode: "lines", type: "line", name:'newSignal'}
@@ -127,11 +127,8 @@ document.addEventListener("click", async(e) => {
             stopingBtns[i].classList.add("btn-on")
         }
         e.target.classList.add("hide-play-btn")
-        audio.src = ''
-        getAudio()
-        getData(currentMode, signal, originalSignal, newSpectro, originalSpectro)
+        await getData(currentMode, signal, originalSignal, newSpectro, originalSpectro)
         plotAll(signal, originalSignal, newSpectro, originalSpectro, layout, spectrolayout) 
-        audio.src = 'http://127.0.0.1:5000/audio'
         play()
     }
 
@@ -195,7 +192,6 @@ browseBtn[0].addEventListener('change', ()=> {
         },
     });
     stopButton.click()
-    audio.src = ''
     currentMode['slidersInfo'] = createSlidersObj(currentMode, sidersRanges[currentMode.name], slidersLabels[currentMode.name])
     slidersObj = currentMode['slidersInfo']
     createSlidersElemnts(slidersObj)

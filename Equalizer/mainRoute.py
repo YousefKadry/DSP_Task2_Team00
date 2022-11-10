@@ -9,7 +9,7 @@ def main_route():
 
 @app.route('/audio', methods= ['GET'])
 def get_audio():
-    audiopath = 'static/assets/upload-edit/edited1.wav'
+    audiopath = 'static/assets/upload-edit/edited.wav'
     return send_file(
         audiopath, 
         mimetype="audio/wav"

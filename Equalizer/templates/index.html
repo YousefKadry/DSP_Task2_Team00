@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {{ JSGlue.include() }}
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,7 +25,7 @@
             <!-- <audio id="audio" src="./Equalizer/static/assets/test.wav"></audio> -->
             <audio controls hidden id="audio" >
                 <!-- <source src="horse.ogg" type="audio/ogg"> -->
-                <source  type="audio/wav">
+                <source id="audiosrc" type="audio/wav">
             </audio>
             <div class="buttons">
                 <div class="button pause btn-off stoping-btns">
