@@ -128,6 +128,7 @@ document.addEventListener("click", async(e) => {
         }
         e.target.classList.add("hide-play-btn")
         getData(currentMode, signal, originalSignal, newSpectro, originalSpectro)
+        getAudio()
         plotAll(signal, originalSignal, newSpectro, originalSpectro, layout, spectrolayout) 
         play()
     }
@@ -176,7 +177,6 @@ if(e.target.className == "speed-slider"){
 
 
 let browseBtn = document.getElementsByClassName('browse')
-// document.getElementById('submit').addEventListener('click')
 browseBtn[0].addEventListener('change', ()=> {
     playButton.classList.remove("btn-off")
     var file = browseBtn[0].files[0];  

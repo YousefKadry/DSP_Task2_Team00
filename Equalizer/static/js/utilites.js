@@ -116,7 +116,7 @@ let createSlidersObj = (mode, sliderFreqValues, labels) => {
 }
 
 
-let sidersRanges = {frequency:[[1,500], [500, 1000], [1000, 1500], [1500, 2000]
+let sidersRanges = {frequency:[[1, 500], [500, 1000], [1000, 1500], [1500, 2000]
     , [2000, 2500], [2500, 3000] ,[3000, 3500] ,[3500, 4000] ,[4000, 4500] ,[4500, 5000]]
     ,vowels:[[1,500], [500, 1000], [1000, 1500], [1500, 2000]
     , [2000, 2500], [2500, 3000] ,[3000, 3500] ,[3500, 4000] ,[4000, 4500]]
@@ -219,16 +219,22 @@ let plotAll = (signal, originalSignal, newSpectro, originalSpectro, layout, spec
     syncHover(plot1, plot2)
     syncHover(plot3, plot4)
 
-    plot1.on("plotly_relayout", function(ed) {
-        Plotly.relayout('plot2', ed)
-    });
+    syncZooming(plot1, plot2)
+    syncZooming(plot3, plot4)
 
-    plot3.on("plotly_relayout", function(ed) {
-        Plotly.relayout('plot4', ed)
-        });
+    // plot1.on("plotly_relayout", function(ed) {
+    //     Plotly.relayout('plot2', ed)
+    // });
+
+    // plot3.on("plotly_relayout", function(ed) {
+    //     Plotly.relayout('plot4', ed)
+    //     });
     
     
 }
+
+
+
 let plotdata
 let step =  0
 let speed = 0.1
@@ -319,7 +325,7 @@ let getData = (currentMode, signal, originalSignal, newSpectro, originalSpectro)
         }
 
     })
-    getAudio()
+    
 }
 let audio = document.getElementById('audio')
 // let audio
@@ -364,4 +370,10 @@ let controlSpeed = (speedValue)=>{
     let originalSpeed = .1
     speed = originalSpeed*speedValue
     audio.playbackRate = speedValue
+}
+
+let syncZooming = (plot1, plot2)=>{
+    plot1.on("plotly_relayout", function(ed) {
+        Plotly.relayout(plot2, ed)
+    });
 }

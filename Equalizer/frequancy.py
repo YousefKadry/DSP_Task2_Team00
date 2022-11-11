@@ -44,7 +44,6 @@ def upload():
     if request.method == 'POST':
         file = request.files['file']
     if file:
-        # filename = secure_filename(file.filename)
         file.save(os.path.join('Equalizer/static/assets/upload-edit/uploaded.wav'))
     global sr, song, yf, xf, m, points_per_freq   
     sr, song = wavfile.read("Equalizer/static/assets/upload-edit/uploaded.wav")
@@ -60,10 +59,10 @@ def edit_freq():
 
     freq_amp = float(request.values['freqAmp'])
     freq_range = (request.values['freqToChange']).split()
-    target_idx1 = int(points_per_freq * int(freq_range[0])*2)
-    target_idx2 = int(points_per_freq * int(freq_range[1])*2)
+    target_idx1 = int(points_per_freq * float(freq_range[0]))
+    target_idx2 = int(points_per_freq * float(freq_range[1]))
     
-    yf[target_idx1-1: target_idx2] = m[target_idx1-1: target_idx2]*freq_amp 
+    yf[target_idx1-1 : target_idx2] = m[target_idx1-1 : target_idx2]*freq_amp 
 
     return [len(yf.astype(np.int16).tolist()), max(xf.astype(np.int16).tolist()), xf.astype(np.int16).tolist()[int(points_per_freq *500)], points_per_freq]
 
