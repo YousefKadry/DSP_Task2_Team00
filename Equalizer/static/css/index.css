@@ -264,6 +264,19 @@ body{
     justify-content: space-between;
 }
 
+.no-file-uploaded .play-bar-data{
+    color: var(--inactive-text);
+}
+
+.no-file-uploaded  .play-time-slider::-webkit-slider-thumb{
+    background: var(--inactive-button);
+    cursor: default;
+}
+
+.no-file-uploaded  .play-time-slider:hover{
+    opacity: 0.7;
+}
+
 .sig{
     display: inline-flex;
     flex-direction: column;

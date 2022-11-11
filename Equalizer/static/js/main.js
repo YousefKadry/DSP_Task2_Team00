@@ -119,11 +119,13 @@ document.addEventListener("click", async(e) => {
 
  
     if(e.target.classList[1] == "play" && !e.target.classList.contains("btn-off")){
+        document.querySelector(".play-bar").classList.remove("no-file-uploaded")
         for(i=0; i<stopingBtns.length; i++){
             stopingBtns[i].classList.remove("btn-off")
             stopingBtns[i].classList.add("btn-on")
         }
         e.target.classList.add("hide-play-btn")
+        
         getData(currentMode, signal, originalSignal, newSpectro, originalSpectro)
         getAudio()
         plotAll(signal, originalSignal, newSpectro, originalSpectro, layout, spectrolayout) 
@@ -136,10 +138,13 @@ document.addEventListener("click", async(e) => {
             stopingBtns[i].classList.remove("btn-on")
             currentTime.innerHTML = "-"
             endTime.innerHTML = "-"
-        }   
+        }
+        document.querySelector(".play-bar").classList.add("no-file-uploaded")
+        playBar.disabled = true   
         setTimeout(() => {playButton.classList.remove("hide-play-btn"); }, 50);
         pauseButton.classList.remove("pausing")
         stopPlaying()
+
 
 
     }
@@ -166,7 +171,6 @@ audio.addEventListener("timeupdate",(e)=>{
         playBar.value = audio.currentTime
     }
     playBar.max = audio.duration
-    console.log(audio.duration)
     if(audio.duration){
         document.querySelector(".end").innerHTML = Math.floor(audio.duration);
     }
@@ -175,7 +179,9 @@ audio.addEventListener("timeupdate",(e)=>{
 playBar.addEventListener("change", (e)=>{
     audio.currentTime = playBar.value
     step = audio.currentTime
-    play()
+    if(!paused){
+        play()
+    }
     }
 )
 playBar.addEventListener("input", (e)=>{currentTime.innerHTML = Math.floor(playBar.value)})
@@ -202,6 +208,7 @@ if(e.target.className == "speed-slider"){
 
 let browseBtn = document.getElementsByClassName('browse')
 browseBtn[0].addEventListener('change', ()=> {
+    playBar.disabled = false
     playButton.classList.remove("btn-off")
     var file = browseBtn[0].files[0];  
     var uploadedFileName = file.name;
