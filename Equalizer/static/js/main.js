@@ -10,16 +10,16 @@ const modes = {
 let signal = {x:[], y:[], mode: "lines", type: "line", name:'newSignal'}
 let originalSignal = {x:[], y:[], mode: "lines", type: "line", name:'origSignal'}
 let colorScale = [
-    ['0.0', 'rgb(165,0,38)'],
-    ['0.111111111111', 'rgb(215,48,39)'],
-    ['0.222222222222', 'rgb(244,109,67)'],
-    ['0.333333333333', 'rgb(253,174,97)'],
-    ['0.444444444444', 'rgb(254,224,144)'],
-    ['0.555555555556', 'rgb(224,243,248)'],
-    ['0.666666666667', 'rgb(171,217,233)'],
-    ['0.777777777778', 'rgb(116,173,209)'],
-    ['0.888888888889', 'rgb(69,117,180)'],
-    ['1.0', 'rgb(49,54,149)']
+    ['0.0', '#023a21'],
+    ['0.111111111111', '#035934'],
+    ['0.222222222222', '#027161'],
+    ['0.333333333333', '#02888e'],
+    ['0.444444444444', '#01a0bb'],
+    ['0.555555555556', '#00b7e8'],
+    ['0.666666666667', '#048ac5'],
+    ['0.777777777778', '#085da2'],
+    ['0.888888888889', '#0f025b'],
+    ['1.0', '#0f025b']
     ]
 let originalSpectro = {x:[], y:[],z:[], type:'heatmap', colorscale:colorScale}
 let newSpectro = {x:[], y:[],z:[], type:'heatmap', colorscale:colorScale}
@@ -117,10 +117,7 @@ document.addEventListener("click", async(e) => {
         }
     }
 
-    if(e.target.classList.contains("browse")){
-
-    }
-
+ 
     if(e.target.classList[1] == "play" && !e.target.classList.contains("btn-off")){
         for(i=0; i<stopingBtns.length; i++){
             stopingBtns[i].classList.remove("btn-off")
@@ -137,6 +134,8 @@ document.addEventListener("click", async(e) => {
         for(i=0; i<stopingBtns.length; i++){
             stopingBtns[i].classList.add("btn-off")
             stopingBtns[i].classList.remove("btn-on")
+            currentTime.innerHTML = "-"
+            endTime.innerHTML = "-"
         }   
         setTimeout(() => {playButton.classList.remove("hide-play-btn"); }, 50);
         pauseButton.classList.remove("pausing")
@@ -157,6 +156,31 @@ document.addEventListener("click", async(e) => {
     } 
 
 })
+let playBarClicked = false
+let currentTime = document.querySelector(".start")
+let endTime = document.querySelector(".end")
+playBar = document.querySelector(".play-time-slider")
+audio.addEventListener("timeupdate",(e)=>{
+    if(!playBarClicked){
+        currentTime.innerHTML = Math.floor(audio.currentTime)
+        playBar.value = audio.currentTime
+    }
+    playBar.max = audio.duration
+    console.log(audio.duration)
+    if(audio.duration){
+        document.querySelector(".end").innerHTML = Math.floor(audio.duration);
+    }
+})
+
+playBar.addEventListener("change", (e)=>{
+    audio.currentTime = playBar.value
+    step = audio.currentTime
+    play()
+    }
+)
+playBar.addEventListener("input", (e)=>{currentTime.innerHTML = Math.floor(playBar.value)})
+playBar.addEventListener("mousedown", (e)=>{playBarClicked = true})
+playBar.addEventListener("mouseup", (e)=>{playBarClicked = false})
 
 var slidersValue = document.getElementsByClassName("slider-value")  
 document.addEventListener('input', (e) => {
@@ -197,9 +221,12 @@ browseBtn[0].addEventListener('change', ()=> {
     currentMode['slidersInfo'] = createSlidersObj(currentMode, sidersRanges[currentMode.name], slidersLabels[currentMode.name])
     slidersObj = currentMode['slidersInfo']
     createSlidersElemnts(slidersObj)
+    
 
 }
 )
+
+
 
 let speedSlider = document.getElementById('speedControl')
 speedSlider.addEventListener('mouseup', ()=>{

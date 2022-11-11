@@ -127,7 +127,7 @@ let sidersRanges = {frequency:[[1, 500], [500, 1000], [1000, 1500], [1500, 2000]
     ,option:[[1,500], [500, 1000], [1000, 1500], [1500, 2000]
     , [2000, 2500], [2500, 3000]]}
 
-let slidersLabels = {frequency:['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8', 'label9', 'label10']
+let slidersLabels = {frequency:['500Hz', '1000Hz', '1500Hz', '2000Hz', '2500Hz', '3000Hz', '3500Hz', '4000Hz', '4500Hz', '5000Hz']
     ,vowels:['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8', 'label9']
     ,musicalInstruments:['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8']
     ,medicalSignal:['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7']
@@ -153,21 +153,26 @@ let createSlidersElemnts = (slidersInfo)=>{
     Object.entries(slidersInfo).forEach(([sliderId, sliderObj]) => {
         let slider = document.createElement("div")
         slider.className = "slider col-1"
+       
         let input = document.createElement("input")
         input.id = sliderId
         input.type = "range"
         input.min = 0
         input.max = currentMode.maxFreq
         input.value = sliderObj.freqAmp
-
         input.step = currentMode.step
         input.className = `slider ${sliderId}`
 
-        let value= document.createElement("div")
-        
+        let value= document.createElement("div")      
         value.innerHTML= sliderObj.freqAmp
         value.className = `slider-value ${sliderId}`
 
+        let sliderLabel = document.createElement("div")
+        sliderLabel.innerHTML = sliderObj.label
+        sliderLabel.className = "label"
+        
+
+        slider.appendChild(sliderLabel)
         slider.appendChild(input)
         slider.appendChild(value)
         slidersPanel.appendChild(slider)
@@ -239,11 +244,12 @@ let plotdata
 let step =  0
 let speed = 0.1
 let play = ()=>{
+    clearInterval(plotdata)
     plotdata = setInterval(() =>{
         if(step+.25 <=signal.x[signal.x.length-1]){
             step+= speed
             if(step>0){
-                let range = {range:[step-.25, step+.25]}
+                range = {range:[step-.25, step+.25]}
                 layout['xaxis']= range
                 setLayout(layout)
             }
@@ -328,6 +334,7 @@ let getData = (currentMode, signal, originalSignal, newSpectro, originalSpectro)
     
 }
 let audio = document.getElementById('audio')
+
 // let audio
 let audioName
 let getAudio =  ()=>{
