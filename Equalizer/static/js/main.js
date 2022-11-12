@@ -125,7 +125,7 @@ document.addEventListener("click", async(e) => {
             stopingBtns[i].classList.add("btn-on")
         }
         e.target.classList.add("hide-play-btn")
-        
+        playBar.disabled = false   
         getData(currentMode, signal, originalSignal, newSpectro, originalSpectro)
         getAudio()
         plotAll(signal, originalSignal, newSpectro, originalSpectro, layout, spectrolayout) 
