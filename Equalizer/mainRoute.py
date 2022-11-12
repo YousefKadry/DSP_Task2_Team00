@@ -4,7 +4,7 @@ from flask import render_template, send_file
 @app.route('/')
 def main_route():
     audiopath = '../static/assets/upload-edit/edited.wav'
-    return render_template('index.html', audiopath=audiopath)
+    return render_template('index.html')
 
 
 @app.route('/audio', methods= ['GET'])

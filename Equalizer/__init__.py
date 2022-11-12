@@ -5,3 +5,4 @@ app = Flask(__name__)
 jsglue = JSGlue(app)
 
 from Equalizer import frequancy, medical, music, vowels, mainRoute
+ 

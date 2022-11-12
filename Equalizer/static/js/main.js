@@ -2,7 +2,7 @@ const selectedModes = document.getElementsByClassName("mode")
 const modes = {
     freq: {numOfSliders:10, name:"frequency", maxFreq:10, step:0.1, editRange:true},
     vowels: {numOfSliders:9, name:"vowels", maxFreq:10, step:0.1, editRange:true},
-    musicalInstruments: {numOfSliders:8, name:"musicalInstruments", maxFreq:10, step:0.1, editRange:true},
+    musicalInstruments: {numOfSliders:3, name:"musicalInstruments", maxFreq:10, step:0.1, editRange:true},
     medicalSignal: {numOfSliders:7, name:"medicalSignal", maxFreq:10, step:0.1, editRange:true},
     option: {numOfSliders:6, name:"option", maxFreq:10, step:0.1, editRange:true}
 }
@@ -165,6 +165,7 @@ let playBarClicked = false
 let currentTime = document.querySelector(".start")
 let endTime = document.querySelector(".end")
 playBar = document.querySelector(".play-time-slider")
+
 audio.addEventListener("timeupdate",(e)=>{
     if(!playBarClicked){
         currentTime.innerHTML = Math.floor(audio.currentTime)
