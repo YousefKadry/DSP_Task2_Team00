@@ -12,7 +12,7 @@ let sidersRanges = {frequency:[[1, 500], [500, 1000], [1000, 1500], [1500, 2000]
     , [2000, 2500], [2500, 3000] ,[3000, 3500] ,[3500, 4000] ,[4000, 4500] ,[4500, 5000]]
     ,vowels:[[1,500], [500, 1000], [1000, 1500], [1500, 2000]
     , [2000, 2500], [2500, 3000] ,[3000, 3500] ,[3500, 4000] ,[4000, 4500]]
-    ,musicalInstruments:[[1,250], [200, 400], [400, 1200]]
+    ,musicalInstruments:[[1,300], [1200,13000], [300, 1200]]
     ,medicalSignal:[[1,500], [500, 1000], [1000, 1500], [1500, 2000]
     , [2000, 2500], [2500, 3000] ,[3000, 3500]]
     ,option:[[1,500], [500, 1000], [1000, 1500], [1500, 2000]
@@ -20,7 +20,7 @@ let sidersRanges = {frequency:[[1, 500], [500, 1000], [1000, 1500], [1500, 2000]
 
 let slidersLabels = {frequency:['500Hz', '1000Hz', '1500Hz', '2000Hz', '2500Hz', '3000Hz', '3500Hz', '4000Hz', '4500Hz', '5000Hz']
     ,vowels:['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8', 'label9']
-    ,musicalInstruments:['drum', 'flute', 'xylaphone']
+    ,musicalInstruments:['drum', 'triangle', 'xylaphone']
     ,medicalSignal:['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7']
     ,option:['label1', 'label2', 'label3', 'label4', 'label5', 'label6']}
 
