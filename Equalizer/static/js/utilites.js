@@ -15,21 +15,20 @@ let sidersRanges = {frequency:[[1, 500], [500, 1000], [1000, 1500], [1500, 2000]
     ,musicalInstruments:[[1,300], [1200,6200], [300, 1200]]
     ,medicalSignal:[[1,500], [500, 1000], [1000, 1500], [1500, 2000]
     , [2000, 2500], [2500, 3000] ,[3000, 3500]]
-    ,option:[[1,500], [500, 1000], [1000, 1500], [1500, 2000]
-    , [2000, 2500], [2500, 3000]]}
+    ,pitch:[[1,500]]}
 
 let slidersLabels = {frequency:['500Hz', '1000Hz', '1500Hz', '2000Hz', '2500Hz', '3000Hz', '3500Hz', '4000Hz', '4500Hz', '5000Hz']
     ,vowels:['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8', 'label9']
     ,musicalInstruments:['drum', 'triangle', 'xylaphone']
     ,medicalSignal:['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7']
-    ,option:['label1', 'label2', 'label3', 'label4', 'label5', 'label6']}
+    ,pitch:['pitch']}
 
 let createModesSliders = (modes)=>{
 modes.freq['slidersInfo'] = createSlidersObj(modes.freq, sidersRanges[modes.freq.name], slidersLabels[modes.freq.name])
 modes.vowels['slidersInfo'] = createSlidersObj(modes.vowels, sidersRanges[modes.vowels.name], slidersLabels[modes.vowels.name])
 modes.musicalInstruments['slidersInfo'] = createSlidersObj(modes.musicalInstruments, sidersRanges[modes.musicalInstruments.name], slidersLabels[modes.musicalInstruments.name])
 modes.medicalSignal['slidersInfo'] = createSlidersObj(modes.medicalSignal, sidersRanges[modes.medicalSignal.name], slidersLabels[modes.medicalSignal.name])
-modes.option['slidersInfo'] = createSlidersObj(modes.option, sidersRanges[modes.option.name], slidersLabels[modes.option.name])
+modes.pitch['slidersInfo'] = createSlidersObj(modes.pitch, sidersRanges[modes.pitch.name], slidersLabels[modes.pitch.name])
 }
 
 
@@ -47,7 +46,7 @@ let createSlidersElemnts = (slidersInfo)=>{
         let input = document.createElement("input")
         input.id = sliderId
         input.type = "range"
-        input.min = 0
+        input.min = currentMode.minFreq
         input.max = currentMode.maxFreq
         input.value = sliderObj.freqAmp
         input.step = currentMode.step

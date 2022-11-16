@@ -1,10 +1,10 @@
 const selectedModes = document.getElementsByClassName("mode")
 const modes = {
-    freq: {numOfSliders:10, name:"frequency", maxFreq:10, step:0.1, editRange:true},
-    vowels: {numOfSliders:9, name:"vowels", maxFreq:10, step:0.1, editRange:true},
-    musicalInstruments: {numOfSliders:3, name:"musicalInstruments", maxFreq:10, step:0.1, editRange:true},
-    medicalSignal: {numOfSliders:7, name:"medicalSignal", maxFreq:10, step:0.1, editRange:true},
-    option: {numOfSliders:6, name:"option", maxFreq:10, step:0.1, editRange:true}
+    freq: {numOfSliders:10, name:"frequency", maxFreq:10, minFreq:0, step:0.1, editRange:true},
+    vowels: {numOfSliders:9, name:"vowels", maxFreq:10, minFreq:0, step:0.1, editRange:true},
+    musicalInstruments: {numOfSliders:3, name:"musicalInstruments", maxFreq:10, minFreq:0, step:0.1, editRange:true},
+    medicalSignal: {numOfSliders:7, name:"medicalSignal", maxFreq:10, minFreq:0, step:0.1, editRange:true},
+    pitch: {numOfSliders:1, name:"pitch", maxFreq:2, minFreq:0.5, step:0.1, editRange:true}
 }
 
 let signal = {x:[], y:[], mode: "lines", type: "line", name:'newSignal'}

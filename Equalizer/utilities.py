@@ -15,7 +15,7 @@ def uploadAudio(request):
         file = request.files['file']
     if file:
         file.save(os.path.join('Equalizer/static/assets/upload-edit/uploaded.wav'))
-
+    
     sr, song = wavfile.read("Equalizer/static/assets/upload-edit/uploaded.wav")
     yf = rfft(song)
     xf = fftfreq(len(yf), 1 / sr)
@@ -34,8 +34,9 @@ def editFreqRange(request, yf, points_per_freq, m):
     
     
     
-def saveAudio(i, yf,sr):
-    yt = irfft(yf).astype(np.int16)
+def saveAudio(i, yf, sr, yt=[]):
+    if(not yt.any()):
+        yt = irfft(yf).astype(np.int16)
     if(os.path.exists(f"Equalizer/static/edited{i-1}.wav")):
         os.remove(f"Equalizer/static/edited{i-1}.wav")
     if(os.path.exists(f"Equalizer/static/edited{i+1}.wav")):
@@ -61,3 +62,15 @@ def dataToDraw(yt, sr, song):
     sampledSong = song.tolist()[::80]
     
     return sampledx, sampledy, sampledSong, f.tolist(), t.tolist(), freqAmp.tolist(), orignalF.tolist(), orignalT.tolist(), orignalFreqAmp.tolist()
+
+
+
+def pitchChanger(file,yf,sr):
+    factor = float(request.values['freqAmp'])
+
+    soundFile, sr = librosa.load(file, sr=None)
+
+    soundFile = librosa.effects.time_stretch(soundFile, rate=factor)
+    yf = soundFile
+    sr = int(sr/factor)
+    return yf, sr 
