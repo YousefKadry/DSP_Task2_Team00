@@ -1,7 +1,7 @@
 const selectedModes = document.getElementsByClassName("mode")
 const modes = {
     freq: {numOfSliders:10, name:"frequency", maxFreq:10, minFreq:0, step:0.1, editRange:true},
-    vowels: {numOfSliders:9, name:"vowels", maxFreq:10, minFreq:0, step:0.1, editRange:true},
+    vowels: {numOfSliders:4, name:"vowels", maxFreq:10, minFreq:0, step:0.1, editRange:true},
     musicalInstruments: {numOfSliders:3, name:"musicalInstruments", maxFreq:10, minFreq:0, step:0.1, editRange:true},
     medicalSignal: {numOfSliders:7, name:"medicalSignal", maxFreq:10, minFreq:0, step:0.1, editRange:true},
     pitch: {numOfSliders:1, name:"pitch", maxFreq:2, minFreq:0.5, step:0.1, editRange:true}

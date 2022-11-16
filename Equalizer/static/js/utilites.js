@@ -10,15 +10,14 @@ let createSlidersObj = (mode, sliderFreqValues, labels) => {
 
 let sidersRanges = {frequency:[[1, 500], [500, 1000], [1000, 1500], [1500, 2000]
     , [2000, 2500], [2500, 3000] ,[3000, 3500] ,[3500, 4000] ,[4000, 4500] ,[4500, 5000]]
-    ,vowels:[[1,500], [500, 1000], [1000, 1500], [1500, 2000]
-    , [2000, 2500], [2500, 3000] ,[3000, 3500] ,[3500, 4000] ,[4000, 4500]]
+    ,vowels:[[1,500], [700, 1300], [2500, 7500], [3000, 5000]]
     ,musicalInstruments:[[1,300], [1200,6200], [300, 1200]]
     ,medicalSignal:[[1,500], [500, 1000], [1000, 1500], [1500, 2000]
     , [2000, 2500], [2500, 3000] ,[3000, 3500]]
     ,pitch:[[1,500]]}
 
 let slidersLabels = {frequency:['500Hz', '1000Hz', '1500Hz', '2000Hz', '2500Hz', '3000Hz', '3500Hz', '4000Hz', '4500Hz', '5000Hz']
-    ,vowels:['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8', 'label9']
+    ,vowels:['N', 'O', 'S', 'Y']
     ,musicalInstruments:['drum', 'triangle', 'xylaphone']
     ,medicalSignal:['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7']
     ,pitch:['pitch']}
