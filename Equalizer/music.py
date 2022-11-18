@@ -11,24 +11,27 @@ yf = 0
 sr = 0
 song = 0
 xf = 0
-m = 0
+yfCopy = 0
 points_per_freq = 0
 i = 0
 
 @app.route('/musicalInstruments/upload', methods = ['POST'])
 def uploadMusic():
     
-    global sr, song, yf, xf, m, points_per_freq
-    yf, sr, song, xf, m, points_per_freq = uploadAudio(request)
+    global sr, song, yf, xf, yfCopy, points_per_freq
+    yf, sr, song, xf, yfCopy, points_per_freq = uploadAudio(request)
     return []
 
 
 @app.route('/musicalInstruments', methods = ['POST'])
 def edit_music():
 
-    editFreqRange(request, yf, points_per_freq, m)
+    editFreqRange(request, yf, points_per_freq, yfCopy)
     
     return []
+
+
+
 
 
 

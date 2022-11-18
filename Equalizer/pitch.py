@@ -35,9 +35,6 @@ def edit_pitch():
     
     factor = float(request.values['freqAmp'])
     yt = librosa.effects.time_stretch(song, rate=factor)
-
-
-
     
     return []
 
@@ -48,9 +45,9 @@ def post_pitch_data():
     
     global i, yt, sr, factor
     # sr = int(sr/factor)
-    yt, i, filePath = saveAudio(i, 0, int(sr/factor), song)
+    yt, i, filePath = saveAudio(i, 0, int(sr/factor), yt)
     
-    sampledx,  sampledy, sampledSong, f, t, freqAmp, orignalF, orignalT, orignalFreqAmp = dataToDraw(yt, int(sr/factor), song)
+    sampledx,  sampledy, sampledSong, f, t, freqAmp, orignalF, orignalT, orignalFreqAmp, sampledxpitch = dataToDraw(yt, sr, song, factor)
     
     return [sampledx,  sampledy, sampledSong, f, t,
-            freqAmp, orignalF, orignalT, orignalFreqAmp, filePath]
+            freqAmp, orignalF, orignalT, orignalFreqAmp, filePath, sampledxpitch]

@@ -1,0 +1,94 @@
+@media (max-width: 1200px){
+    body{
+        background-image: none !important;
+        background-color: #022f3a !important;
+    }
+
+    .container{
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        margin-bottom: 5vh;
+    }
+
+    .control{
+        width: 95%;
+        height: 300px !important;
+        margin: 2vh 0;
+    }
+
+    .browse{
+        margin-bottom: 2vh;
+    }
+
+    .buttons{
+        left: 5%;
+        bottom: 10%;
+        width: 30%;
+    }
+
+    .button.play{
+        height: 55px;
+        width: 55px;
+    }
+
+    .play-speed, .play-bar{
+        width: 50%;
+        right: 5%;    
+    }
+
+    .play-speed{
+        bottom: 25%;
+    }
+
+    .play-bar{
+        bottom: 5%;
+        transform: translateX(-10%);
+    }
+
+    .sig{
+        width: 95%;
+        height: fit-content;
+        margin: 0 0 0;
+        border-radius: 0;
+    }
+    .fig{
+        height: 390px !important;
+    }
+
+    .sliders{
+        height: 17rem;
+    }
+
+    .fig-modes{
+        bottom: 33vh;
+        right: 4vw;
+    }
+}
+
+@media (max-width: 920px){
+    .select-mode{
+        font-size: 11px;
+    }
+    .fig-modes{
+        width: 50vw;
+        bottom: 27%;
+    }
+    .select-mode{
+        margin-top: 6vh;
+    }
+    .sliders{
+        height: 19rem;
+    }
+    .buttons .button{
+        font-size: 20px;
+    }
+    .slider-value{
+        width: 50px !important;
+    }
+}
+@media (max-width: 680px){
+}
+

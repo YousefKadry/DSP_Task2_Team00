@@ -3,7 +3,7 @@ const modes = {
     freq: {numOfSliders:10, name:"frequency", maxFreq:10, minFreq:0, step:0.1, editRange:true},
     vowels: {numOfSliders:4, name:"vowels", maxFreq:10, minFreq:0, step:0.1, editRange:true},
     musicalInstruments: {numOfSliders:3, name:"musicalInstruments", maxFreq:10, minFreq:0, step:0.1, editRange:true},
-    medicalSignal: {numOfSliders:7, name:"medicalSignal", maxFreq:10, minFreq:0, step:0.1, editRange:true},
+    medicalSignal: {numOfSliders:1, name:"medicalSignal", maxFreq:10, minFreq:0, step:0.1, editRange:true},
     pitch: {numOfSliders:1, name:"pitch", maxFreq:2, minFreq:0.5, step:0.1, editRange:true}
 }
 
@@ -119,6 +119,7 @@ document.addEventListener("click", async(e) => {
 
  
     if(e.target.classList[1] == "play" && !e.target.classList.contains("btn-off")){
+        document.querySelector(".fig-labels").style.display = "flex"
         document.querySelector(".play-bar").classList.remove("no-file-uploaded")
         for(i=0; i<stopingBtns.length; i++){
             stopingBtns[i].classList.remove("btn-off")

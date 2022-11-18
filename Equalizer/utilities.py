@@ -16,17 +16,17 @@ def uploadAudio(request):
     sr, song = wavfile.read("Equalizer/static/assets/upload-edit/uploaded.wav")
     yf = rfft(song)
     xf = fftfreq(len(yf), 1 / sr)
-    m = yf.copy()
+    yfCopy = yf.copy()
     points_per_freq = len(xf) / (sr / 2)
-    return yf, sr, song, xf, m, points_per_freq
+    return yf, sr, song, xf, yfCopy, points_per_freq
 
 
-def editFreqRange(request, yf, points_per_freq, m):
+def editFreqRange(request, yf, points_per_freq, yfCopy):
     freq_amp = float(request.values['freqAmp'])
     freq_range = (request.values['freqToChange']).split()
     target_idx1 = int(points_per_freq * float(freq_range[0]))
     target_idx2 = int(points_per_freq * float(freq_range[1]))
-    yf[target_idx1-1 : target_idx2] = m[target_idx1-1 : target_idx2]*freq_amp
+    yf[target_idx1-1 : target_idx2] = yfCopy[target_idx1-1 : target_idx2]*freq_amp
     
     
     
@@ -42,13 +42,14 @@ def saveAudio(i, yf, sr, yt=[]):
     return yt, i, f'edited{i-1}.wav'
 
 
-def dataToDraw(yt, sr, song):
-
-    normalizedY = yt / (2.**15)
+def dataToDraw(yt, sr, song, factor=1):
+    
+    
+    normalizedY = yt / (2.0**15)
     N = 512
     w = signal.blackman(N)
-    f, t, freqAmp = signal.spectrogram(normalizedY, sr, window=w, nfft=N)
-    normalizedSong = song / (2.**15)
+    f, t, freqAmp = signal.spectrogram(normalizedY, int(sr/factor), window=w, nfft=N)
+    normalizedSong = song / (2.0**15)
     orignalF, orignalT, orignalFreqAmp = signal.spectrogram(
         normalizedSong, sr, window=w, nfft=N)
     orignalFreqAmp = 10*np.log10(orignalFreqAmp)
@@ -57,48 +58,17 @@ def dataToDraw(yt, sr, song):
     sampledx = x[::80]
     sampledy = yt.tolist()[::80]
     sampledSong = song.tolist()[::80]
+    if factor == 1:
     
-    return sampledx, sampledy, sampledSong, f.tolist(), t.tolist(), freqAmp.tolist(), orignalF.tolist(), orignalT.tolist(), orignalFreqAmp.tolist()
+        return sampledx, sampledy, sampledSong, f.tolist(), t.tolist(), freqAmp.tolist(), orignalF.tolist(), orignalT.tolist(), orignalFreqAmp.tolist()
+    else:
+        srPitch = int(sr/factor)
+        xpitch = list(np.linspace(0, int(len(yt)/srPitch), len(yt)))
+        sampledxpitch = x[::80]
+        return sampledx, sampledy, sampledSong, f.tolist(), t.tolist(), freqAmp.tolist(), orignalF.tolist(), orignalT.tolist(), orignalFreqAmp.tolist(), sampledxpitch
 
 
 
-def pitchChanger(file,yf,sr):
-    factor = float(request.values['freqAmp'])
 
-    soundFile, sr = librosa.load(file, sr=None)
-
-    soundFile = librosa.effects.time_stretch(soundFile, rate=factor)
-    yf = soundFile
-    sr = int(sr/factor)
-    return yf, sr 
-
-
-def modifyVowel(sr, freqs, amplitudes, ampCopy, song, rate, leftRange, rightRange):
-    
-    midRange = (leftRange+rightRange)//2
-    j = rate-1
-    whichRange = 1
-    for i in range(0, len(freqs)-1):
-        if (freqs[i] > rightRange and freqs[i] <= midRange) or (freqs[i] > -midRange and freqs[i] <= -leftRange):
-            amplitudes[i] = ampCopy[i]*j
-            if whichRange == 1:
-                j += 0.00001
-            else:
-                j -= 0.00001
-        if freqs[i] > -rightRange and freqs[i] < rightRange and whichRange == 1:
-            j = rate
-            whichRange = 0
-    j = rate-1
-    whichRange = 1
-    for i in range(0, len(freqs)-1):
-        if (freqs[i] > midRange and freqs[i] <= leftRange) or (freqs[i] > -leftRange and freqs[i] <= -midRange):
-            amplitudes[i] = ampCopy[i]*j
-            if whichRange == 1:
-                j += 0.00001
-            else:
-                j -= 0.00001
-        if freqs[i] > -rightRange and freqs[i] < rightRange and whichRange == 1:
-            j = rate
-            whichRange = 0
 
     

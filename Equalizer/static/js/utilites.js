@@ -2,7 +2,7 @@ let createSlidersObj = (mode, sliderFreqValues, labels) => {
     let slidersObj = {}
         for(let i=1; i <= mode.numOfSliders; i++){
             slidersObj[`${mode.name}-slider-${i}`] ={freqToChange: sliderFreqValues[i-1]
-                                                    ,freqAmp: 1.0, modeName: mode.name, label:labels[i-1]}
+                                                    ,freqAmp: 1, modeName: mode.name, label:labels[i-1]}
         }
     return slidersObj
 }
@@ -10,10 +10,9 @@ let createSlidersObj = (mode, sliderFreqValues, labels) => {
 
 let sidersRanges = {frequency:[[1, 500], [500, 1000], [1000, 1500], [1500, 2000]
     , [2000, 2500], [2500, 3000] ,[3000, 3500] ,[3500, 4000] ,[4000, 4500] ,[4500, 5000]]
-    ,vowels:[[1,500], [700, 1300], [2500, 7500], [3000, 5000]]
-    ,musicalInstruments:[[1,300], [1200,6200], [300, 1200]]
-    ,medicalSignal:[[1,500], [500, 1000], [1000, 1500], [1500, 2000]
-    , [2000, 2500], [2500, 3000] ,[3000, 3500]]
+    ,vowels:[[1,500], [700, 1300], [4800, 8500], [490, 1800]]
+    ,musicalInstruments:[[1,300], [1200,14000], [300, 1200]]
+    ,medicalSignal:[[1,5]]
     ,pitch:[[1,500]]}
 
 let slidersLabels = {frequency:['500Hz', '1000Hz', '1500Hz', '2000Hz', '2500Hz', '3000Hz', '3500Hz', '4000Hz', '4500Hz', '5000Hz']
@@ -32,7 +31,7 @@ modes.pitch['slidersInfo'] = createSlidersObj(modes.pitch, sidersRanges[modes.pi
 
 
 let createSlidersElemnts = (slidersInfo)=>{
-    currentSlidersPanel = document.getElementsByClassName("slider col-1")
+    currentSlidersPanel = document.getElementsByClassName("slider col-4 col-md-1 col-sm-3")
         let numOfSliders = currentSlidersPanel.length
         let slidersList = [...currentSlidersPanel]
         for(let i = 0; i < numOfSliders; i++){
@@ -41,7 +40,7 @@ let createSlidersElemnts = (slidersInfo)=>{
 
     Object.entries(slidersInfo).forEach(([sliderId, sliderObj]) => {
         let slider = document.createElement("div")
-        slider.className = "slider col-1"
+        slider.className = "slider col-4 col-md-1 col-sm-3"
         let input = document.createElement("input")
         input.id = sliderId
         input.type = "range"
@@ -69,7 +68,14 @@ let createSlidersElemnts = (slidersInfo)=>{
         let currentSlider = document.getElementById(sliderId)
         currentSlider.addEventListener('mouseup', () =>{
             sliderObj.freqAmp = parseFloat(currentSlider.value)
-            updateData(sliderObj) 
+            updateData(sliderObj)
+            if(currentMode.name == 'medicalSignal') {
+                getData(currentMode, signal, originalSignal, newSpectro, originalSpectro)
+
+                plotAll(signal, originalSignal, newSpectro, originalSpectro, layout, spectrolayout)
+                layout.xaxis.range =[45,52]
+                setLayout(layout)
+            }
         })
             
     })
@@ -114,15 +120,6 @@ let plotAll = (signal, originalSignal, newSpectro, originalSpectro, layout, spec
 
     syncZooming(plot1, plot2)
     syncZooming(plot3, plot4)
-
-    // plot1.on("plotly_relayout", function(ed) {
-    //     Plotly.relayout('plot2', ed)
-    // });
-
-    // plot3.on("plotly_relayout", function(ed) {
-    //     Plotly.relayout('plot4', ed)
-    //     });
-    
     
 }
 
@@ -134,7 +131,7 @@ let speed = 0.1
 let play = ()=>{
     clearInterval(plotdata)
     plotdata = setInterval(() =>{
-        if(step+.25 <=signal.x[signal.x.length-1]){
+        if(step+.25 <=audio.duration){
             step+= speed
             if(step>0){
                 range = {range:[step-.25, step+.25]}
@@ -216,6 +213,9 @@ let getData = (currentMode, signal, originalSignal, newSpectro, originalSpectro)
             originalSpectro.y = res[6]
             originalSpectro.z = res[8]
             audioName = res[9]
+            if(currentMode.name=='pitch'){
+                signal.x = res[10]
+            }
         }
 
     })
@@ -229,21 +229,7 @@ let getAudio =  ()=>{
     
 
         audio.src = Flask.url_for('static', {"filename":`${audioName}`})
-
-        
-        
-        // $.ajax({
-        //     method: 'GET',
-        //     url: 'http://127.0.0.1:5000/audio',
-        //     dataType: 'json',
-        //     async: false,
-        //     data: {},
-        //     success: function (res, status, xhr) {
-                
-        //         }
-        //     })
-    // audio = new Audio(Flask.url_for('static', {"filename":'edited.wav'}))
-    
+   
 
 }
 
