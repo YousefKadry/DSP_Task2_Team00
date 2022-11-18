@@ -46,6 +46,12 @@ def post_pitch_data():
     global i, yt, sr, factor
     # sr = int(sr/factor)
     yt, i, filePath = saveAudio(i, 0, int(sr/factor), yt)
+    if factor==1:
+    
+        sampledx,  sampledy, sampledSong, f, t, freqAmp, orignalF, orignalT, orignalFreqAmp  = dataToDraw(yt, sr, song, factor)
+        
+        return [sampledx,  sampledy, sampledSong, f, t,
+                freqAmp, orignalF, orignalT, orignalFreqAmp, filePath, sampledx]
     
     sampledx,  sampledy, sampledSong, f, t, freqAmp, orignalF, orignalT, orignalFreqAmp, sampledxpitch = dataToDraw(yt, sr, song, factor)
     

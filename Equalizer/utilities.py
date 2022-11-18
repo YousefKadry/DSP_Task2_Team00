@@ -54,7 +54,7 @@ def dataToDraw(yt, sr, song, factor=1):
         normalizedSong, sr, window=w, nfft=N)
     orignalFreqAmp = 10*np.log10(orignalFreqAmp)
     freqAmp = 10*np.log10(freqAmp)
-    x = list(np.linspace(0, len(yt)/sr, len(yt)))
+    x = list(np.linspace(0, len(song)/sr, len(song)))
     sampledx = x[::80]
     sampledy = yt.tolist()[::80]
     sampledSong = song.tolist()[::80]
@@ -64,7 +64,7 @@ def dataToDraw(yt, sr, song, factor=1):
     else:
         srPitch = int(sr/factor)
         xpitch = list(np.linspace(0, int(len(yt)/srPitch), len(yt)))
-        sampledxpitch = x[::80]
+        sampledxpitch = xpitch[::80]
         return sampledx, sampledy, sampledSong, f.tolist(), t.tolist(), freqAmp.tolist(), orignalF.tolist(), orignalT.tolist(), orignalFreqAmp.tolist(), sampledxpitch
 
 
