@@ -3,6 +3,41 @@
 
 
 ## A Sound Studio Equalizer Project:
+
+
+## About The Project
+
+[![Product Name Screen Shot][product-screenshot]](https://example.com)
+
+
+### Built With
+
+> - Express JS
+> - MongoDB
+> - HTML
+> - CSS
+> - Handlebars
+
+## Getting Started
+
+### Installation
+
+1. Install express js and npm. <a href="https://www.python.org/downloads/">Python</a>
+2. Clone the repo
+   ```sh
+   git clone https://github.com/DiaaBadr/ICU-Managing-website.git
+   ```
+3. In terminal run
+ ```sh
+   pip install -r requirements.txt
+   ```
+4. Run the project
+
+    ```sh
+    python app.py
+    ```
+
+## Usage
 ### It has 4 Modes:
 >- Changing Frequencies.
 >- Changing Amplitudes of 4 Vowles (N, O, S and Y).
