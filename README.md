@@ -20,7 +20,7 @@
 ### Installation
 
 1. Install express js and npm. <a href="https://www.python.org/downloads/">Python</a>
-2. Clone the repo
+2. Clone the repo.
    ```sh
    git clone https://github.com/DiaaBadr/ICU-Managing-website.git
    ```
