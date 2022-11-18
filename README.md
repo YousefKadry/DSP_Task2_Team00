@@ -7,16 +7,13 @@
 
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
 
 ### Built With
 
-> - Express JS
-> - MongoDB
-> - HTML
-> - CSS
-> - Handlebars
+>- Flask
+>- HTML
+>- CSS
+>- JavaScript
 
 ## Getting Started
 
