@@ -25,7 +25,7 @@
    git clone https://github.com/DiaaBadr/ICU-Managing-website.git
    ```
 3. In terminal run
- ```sh
+   ```sh
    pip install -r requirements.txt
    ```
 4. Run the project
